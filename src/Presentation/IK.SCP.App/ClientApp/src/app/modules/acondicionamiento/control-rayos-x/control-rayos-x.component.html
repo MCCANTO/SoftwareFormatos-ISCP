@@ -1,0 +1,146 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      [headerTemplate]="headerTemplate_2"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <ng-template #headerTemplate_2>
+        <div class="d-flex justify-content-between">
+          <div>
+            <button pButton
+                    pRipple
+                    type="button"
+                    icon="fa-solid fa-print fa-xl"
+                    class="p-button-rounded p-button-success p-button-text"
+                    (click)="printControlMonitoreoRayosX()"></button>
+            <!-- <label class="me-2">Mes</label> -->
+            <p-calendar
+              appendTo="body"
+              [showIcon]="true"
+              view="month"
+              dateFormat="mm/yy"
+              class="me-3"
+              styleClass="min-calendar"
+              [(ngModel)]="periodo"
+              appendTo="body"
+              [readonlyInput]="true"
+            ></p-calendar>
+            <button
+              pButton
+              label="Buscar"
+              icon="fa fa-search"
+              class="p-button-rounded p-button-primary h-100 px-5 me-5"
+              (click)="buscar()"
+            ></button>
+            <button
+              pButton
+              label="Revisar"
+              icon="fa fa-check"
+              class="p-button-rounded p-button-success h-100 px-5 me-5"
+              (click)="revisar()"
+              *ngIf="PERMISOS_CTRL_RAYOS_X.REVISION"
+            ></button>
+          </div>
+          <button
+            pButton
+            label="Nuevo"
+            icon="fa-solid fa-plus"
+            class="p-button-rounded p-button-primary h-100 px-5"
+            (click)="agregar()"
+            *ngIf="PERMISOS_CTRL_RAYOS_X.ESCRITURA"
+          ></button>
+        </div>
+      </ng-template>
+      <ng-template #contentTemplate_2>
+        <p-table
+          [value]="controles"
+          [(selection)]="selectedControles"
+          styleClass="p-datatable-sm app-table"
+          responsiveLayout="scroll"
+          [breakpoint]="'960px'"
+          [tableStyle]="{ 'min-width': '80rem' }"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th rowspan="3" style="width: 4rem">
+                <p-tableHeaderCheckbox
+                  *ngIf="
+                    validarControlesPorRevisar() &&
+                    PERMISOS_CTRL_RAYOS_X.REVISION
+                  "
+                ></p-tableHeaderCheckbox>
+              </th>
+              <th rowspan="3" style="min-width: 120px">Fecha Hora</th>
+              <th rowspan="3" style="min-width: 150px">Materia Prima</th>
+              <th colspan="2" class="text-center">¿Detecta y rechaza?</th>
+              <th rowspan="3">Conforme / No conforme</th>
+              <th rowspan="3" style="min-width: 150px">Ejecutado Por</th>
+              <th rowspan="3" style="min-width: 150px">Revisado Por</th>
+              <th rowspan="3" style="min-width: 250px">Observación</th>
+            </tr>
+            <tr>
+              <th class="text-center">1°</th>
+              <th class="text-center">2°</th>
+            </tr>
+            <tr>
+              <th class="text-center" style="min-width: 150px">
+                0.80 mm 316SS<br />
+                P156268699A-276
+              </th>
+              <th class="text-center" style="min-width: 150px">
+                1.0 mm 316SS<br />
+                P156277619E-36
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-control>
+            <tr>
+              <td>
+                <p-tableCheckbox
+                  [value]="control.ControlRayosXId"
+                  *ngIf="!control.Revisado && PERMISOS_CTRL_RAYOS_X.REVISION"
+                ></p-tableCheckbox>
+              </td>
+              <td>{{ control.FechaHora | date : "dd/MM/yyyy HH:mm" }}</td>
+              <td>{{ control.MateriaPrima }}</td>
+              <td class="text-center">
+                <i
+                  *ngIf="control.DeteccionUno"
+                  class="fa fa-check text-success"
+                ></i>
+                <i
+                  *ngIf="!control.DeteccionUno"
+                  class="fa fa-times text-danger"
+                ></i>
+              </td>
+              <td class="text-center">
+                <i
+                  *ngIf="control.DeteccionDos"
+                  class="fa fa-check text-success"
+                ></i>
+                <i
+                  *ngIf="!control.DeteccionDos"
+                  class="fa fa-times text-danger"
+                ></i>
+              </td>
+              <td>
+                <span
+                  class="badge rounded-pill px-4 py-2"
+                  [ngClass]="{
+                    'text-bg-success': control.Conformidad === 'C',
+                    'text-bg-danger': control.Conformidad != 'C'
+                  }"
+                >
+                  {{ control.ConformidadDesc.toUpperCase() }}
+                </span>
+              </td>
+              <td>{{ control.UsuarioEjecucion }}</td>
+              <td>{{ control.UsuarioRevision }}</td>
+              <td>{{ control.Observacion }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>

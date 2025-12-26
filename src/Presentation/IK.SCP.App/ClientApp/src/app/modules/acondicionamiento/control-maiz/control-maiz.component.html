@@ -1,0 +1,109 @@
+
+<app-titulo-pagina
+  titulo="Control de Pelado, Remojo y Sancochado de Maíz"
+  (regresarAnt)="regresar()"
+>
+  <!-- TODO: Se agrego el Boton de Impresion -->
+  <div class="after-title">
+    <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+    <button pButton
+            pRipple
+            type="button"
+            icon="fa-solid fa-print fa-xl"
+            class="p-button-rounded p-button-success p-button-text"
+            (click)="printControlMaiz()"></button>
+  </div>
+</app-titulo-pagina>
+
+<p-tabView>
+  <p-tabPanel header="CONSUMOS">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <app-datos-materia-prima
+          *ngIf="materias"
+          [materias]="materias"
+          (guardar)="guardarMP($event)"
+        ></app-datos-materia-prima>
+      </div>
+      <div class="col-md-6">
+        <app-datos-insumo
+          *ngIf="insumos"
+          [insumos]="insumos"
+          (guardar)="guardarInsumo($event)"
+        ></app-datos-insumo>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <app-tarjeta-seccion
+          icono="fa-solid fa-caret-right"
+          titulo="Observaciones"
+          [contentTemplate]="contentTemplate_5"
+        >
+          <ng-template #contentTemplate_5>
+            <div class="p-fluid grid">
+              <div class="field col-10 mb-0">
+                <textarea
+                  rows="1"
+                  pInputTextarea
+                  [(ngModel)]="observacion"
+                ></textarea>
+              </div>
+              <div class="field col-2 mb-0">
+                <button
+                  pButton
+                  label="Agregar"
+                  icon="fa-solid fa-plus"
+                  class="p-button-rounded p-button-primary px-4"
+                  (click)="agregarObservacion()"
+                ></button>
+              </div>
+              <div class="field col-12">
+                <p-table [value]="observaciones" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Usuario</th>
+                      <th class="text-center">Fecha Hora</th>
+                      <th style="width: 70%">Observación</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-observacion>
+                    <tr>
+                      <td>{{ observacion.usuario }}</td>
+                      <td class="text-center">
+                        {{ observacion.fechaHora | date : "dd/MM/yyyy HH:mm" }}
+                      </td>
+                      <td>{{ observacion.observacion }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+    </div>
+  </p-tabPanel>
+
+  <p-tabPanel header="PELADO (NIXTAMALIZACIÓN)">
+    <app-datos-pelado
+      [datos]="datosPelado"
+      (guardar)="guardarPelado($event)">
+    ></app-datos-pelado>
+  </p-tabPanel>
+
+  <p-tabPanel header="REMOJO">
+    <app-datos-remojo
+      [datos]="datosRemojo"
+      (guardar)="guardarRemojo($event)"
+    ></app-datos-remojo>
+  </p-tabPanel>
+
+  <p-tabPanel header="SANCOCHADO">
+    <app-datos-sancochado
+      [datos]="datosSancochado"
+      (guardar)="guardarSancochado($event)"
+    ></app-datos-sancochado>
+  </p-tabPanel>
+
+</p-tabView>

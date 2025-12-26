@@ -1,0 +1,290 @@
+<div [formGroup]="form">
+  <app-titulo-pagina
+    titulo="Checklist de Arranque de Máquina PRUEBASSS"
+    (regresarAnt)="goTo(0)"
+    [mostrarBotonGuardar]="PERMISOS.ESCRITURA"
+    [mostrarBotonGuardarCerrar]="PERMISOS.ESCRITURA"
+    (guardar)="guardar(false)"
+    (guardarCerrar)="guardar(true)"
+  ></app-titulo-pagina>
+
+  <div class="row mb-4">
+    <div class="col-md-7">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Condiciones Previas"
+        [headerTemplate]="headerTemplate_1"
+        [contentTemplate]="contentTemplate_1"
+      >
+        <ng-template #headerTemplate_1>
+          <button
+            pButton
+            label="Agregar"
+            icon="fa-solid fa-plus"
+            class="p-button-rounded p-button-primary px-4"
+            *ngIf="PERMISOS.ESCRITURA"
+            (click)="agregarCondicionPrevia()"
+          ></button>
+        </ng-template>
+        <ng-template #contentTemplate_1>
+          <p-table [value]="condiciones" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th class="text-center">Tipo</th>
+                <th class="text-center">Fecha Hora</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-condicion>
+              <tr>
+                <td class="text-center">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="fa-solid fa-magnifying-glass fa-xl"
+                    class="p-button-rounded p-button-success p-button-text"
+                    (click)="cargarCondicionesPrevias(condicion.id)"
+                  ></button>
+                </td>
+                <td>{{ condicion.tipoDesc }}</td>
+                <td class="text-center">
+                  {{ condicion.fechaCreacion | date : "dd/MM/yyyy hh:mm" }}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+    <div class="col-md-5">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Variables Básicas"
+        [headerTemplate]="headerTemplate_2"
+        [contentTemplate]="contentTemplate_2"
+      >
+        <ng-template #headerTemplate_2>
+          <button
+            pButton
+            label="Agregar"
+            icon="fa-solid fa-plus"
+            class="p-button-rounded p-button-primary px-4"
+            *ngIf="PERMISOS.ESCRITURA"
+            (click)="agregarVariablesBasicas()"
+          ></button>
+        </ng-template>
+        <ng-template #contentTemplate_2>
+          <p-table [value]="variables" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th class="text-center">Fecha y Hora</th>
+                <th class="text-center">Finalizado</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-variable>
+              <tr>
+                <td class="text-center">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="fa-solid fa-magnifying-glass fa-xl"
+                    class="p-button-rounded p-button-success p-button-text"
+                    (click)="cargarVariablesBasicas(variable.id, variable.cerrado || !PERMISOS.ESCRITURA)"
+                  ></button>
+                </td>
+                <td class="text-center">
+                  {{ variable.fechaCreacion | date : "dd/MM/yyyy hh:mm" }}
+                </td>
+                <td class="text-center">
+                  <i
+                    *ngIf="variable.cerrado"
+                    class="fa-solid fa-check fa-xl text-success"
+                  ></i>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Peso del Sobre Vacío"
+        [contentTemplate]="contentTemplate_3"
+      >
+        <ng-template #contentTemplate_3>
+          <div class="p-fluid grid">
+            <div class="field col-12 md:col-12">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="2"
+                  formControlName="pesoSobreVacio"
+                >
+                </p-inputNumber>
+                <label for="inputtext">Peso Tara</label>
+              </span>
+            </div>
+          </div>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+    <div class="col-md-9">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Peso del Producto"
+        [contentTemplate]="contentTemplate_4"
+      >
+        <ng-template #contentTemplate_4>
+          <div class="p-fluid grid">
+            <div class="field col-3 md:col-3">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="2"
+                  formControlName="pesoSobreProducto1"
+                >
+                </p-inputNumber>
+                <label for="inputtext">1° Peso</label>
+              </span>
+            </div>
+            <div class="field col-3 md:col-3">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="2"
+                  formControlName="pesoSobreProducto2"
+                >
+                </p-inputNumber>
+                <label for="inputtext">2° Peso</label>
+              </span>
+            </div>
+            <div class="field col-3 md:col-3">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="2"
+                  formControlName="pesoSobreProducto3"
+                >
+                </p-inputNumber>
+                <label for="inputtext">3° Peso</label>
+              </span>
+            </div>
+            <div class="field col-3 md:col-3">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="2"
+                  formControlName="pesoSobreProducto4"
+                >
+                </p-inputNumber>
+                <label for="inputtext">4° Peso</label>
+              </span>
+            </div>
+            <div class="field col-3 md:col-3">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="2"
+                  formControlName="pesoSobreProducto5"
+                >
+                </p-inputNumber>
+                <label for="inputtext">5° Peso</label>
+              </span>
+            </div>
+            <div class="field col-3 md:col-3">
+              <span class="p-float-label">
+                <p-inputNumber
+                  inputId="minmaxfraction"
+                  mode="decimal"
+                  locale="en-US"
+                  [maxFractionDigits]="1"
+                  formControlName="pesoSobreProductoProm"
+                >
+                </p-inputNumber>
+                <label for="inputtext">Promedio</label>
+              </span>
+            </div>
+          </div>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Observaciones"
+      [contentTemplate]="contentTemplate_5"
+    >
+      <ng-template #contentTemplate_5>
+        <div class="p-fluid grid">
+          <div class="field col-10 mb-0" *ngIf="PERMISOS.ESCRITURA">
+            <textarea
+              rows="1"
+              pInputTextarea
+              [(ngModel)]="observacion"
+            ></textarea>
+          </div>
+          <div class="field col-2 mb-0" *ngIf="PERMISOS.ESCRITURA">
+            <button
+              pButton
+              label="Agregar"
+              icon="fa-solid fa-plus"
+              class="p-button-rounded p-button-primary px-4"
+              (click)="agregarObservacion()"
+            ></button>
+          </div>
+          <div class="field col-12">
+            <p-table [value]="observaciones" styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Usuario</th>
+                  <th class="text-center">Fecha Hora</th>
+                  <th style="width: 70%">Observación</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-observacion>
+                <tr>
+                  <td>{{ observacion.usuario }}</td>
+                  <td class="text-center">
+                    {{ observacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+                  </td>
+                  <td>{{ observacion.observacion }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

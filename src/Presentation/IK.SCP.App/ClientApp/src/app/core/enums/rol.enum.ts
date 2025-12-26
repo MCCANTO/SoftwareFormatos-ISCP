@@ -1,0 +1,19 @@
+
+
+export enum eRol {
+    PUNTA_ESTRELLA = 22,
+    SUPERVISOR_DE_PRODUCCIÓN_ENVASADO = 23,
+    SUPERVISOR_DE_CALIDAD_ENVASADO = 24,
+    ADMINISTRADOR_ENVASADO = 25,
+    MAQUINISTA_ENVASADO = 26,
+    FACILITADOR = 43,
+}
+
+
+export enum eRolSCP {
+    FAC_ENV = 45,
+    MAQ_ENV = 43,
+    MAQ_FR = 46,
+    PTE_ENV = 44,
+    SAB = 47,
+}

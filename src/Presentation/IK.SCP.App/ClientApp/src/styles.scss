@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  // font-family: "Poppins", sans-serif;
+  height: 100vh;
+  height: -webkit-fill-available;
+  // background-color: #EFEFEF;
+  color: #0b0c0f !important;
+  font-size: 12px;
+}
+
+aside {
+  height: calc(100vh - 60px);
+  background-color: #fff;
+  width: 200px;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.content-main {
+  // width: calc(100% - 200px);
+  overflow-y: auto;
+  height: calc(100vh - 70px);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.title {
+  font-weight: 700;
+}
+
+// .p-component {
+//     font-family: 'Montserrat', sans-serif !important;
+// }
+
+th {
+  // font-weight: 600 !important;
+  // color: #EFEFEF !important;
+  // background-color: #502B20 !important;
+  text-transform: uppercase;
+  padding-left: 0.5rem;
+  // text-align: center !important;
+}
+
+h4,
+h6 {
+  // color: #502B20;
+  color: #0b0c0f;
+  margin-bottom: 0;
+}
+
+h6 {
+  font-weight: 700 !important;
+  font-size: 1.1rem;
+}
+
+.p-component {
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.p-dialog-title {
+  font-weight: bold !important;
+  text-transform: uppercase;
+  color: #94bb1e;
+}
+
+.p-tabview-title {
+  text-transform: uppercase !important;
+  font-weight: 600;
+}
+
+.p-selectbutton .p-button.p-highlight {
+  background: #94bb1e !important;
+  border-color: #94bb1e !important;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.color-aco {
+  color: #0c79c7 !important;
+}
+
+.color-fr {
+  color: #fad365 !important;
+}
+
+.color-env {
+  color: #3cc7ba !important;
+}
+
+.color-env-gra {
+  color: #8d61b9 !important;
+}
+
+.color-saz {
+  color: #d275ea !important;
+}
+
+.bg-aco {
+  background-color: #0c79c7;
+  color: #fff;
+}
+
+.bg-fr {
+  background-color: #fad365;
+}
+
+.bg-env {
+  background-color: #3cc7ba;
+  color: #fff;
+}
+
+.bg-env-gra {
+  background-color: #8d61b9;
+  color: #fff;
+}
+
+.bg-saz {
+  background-color: #d275ea;
+  color: #fff;
+}
+
+.col-form-label {
+  font-weight: 600;
+}
+
+// :host ::ng-deep {
+  .min-calendar {
+    width: 150px;
+  }
+  .app-table.p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
+    background-color: #f8f9fc;
+    border: none;
+    color: #707d94;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #c8d0de;
+  }
+  .app-table.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
+    font-size: 0.9rem;
+  }
+// }

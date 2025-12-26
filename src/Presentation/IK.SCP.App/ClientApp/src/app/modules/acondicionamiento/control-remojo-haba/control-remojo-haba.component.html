@@ -1,0 +1,79 @@
+<app-titulo-pagina
+  titulo="Control de Remojo de Habas"
+  (regresarAnt)="regresar()"
+>
+  <!-- TODO: Se agrego el Boton de Impresion -->
+  <div class="after-title">
+    <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+    <button pButton
+            pRipple
+            type="button"
+            icon="fa-solid fa-print fa-xl"
+            class="p-button-rounded p-button-success p-button-text"
+            (click)="printControlRemojoHabas()"></button>
+  </div>
+</app-titulo-pagina>
+
+<app-tarjeta-seccion
+  [contentTemplate]="contentTemplate_2"
+  [headerTemplate]="headerTemplate_2"
+>
+  <ng-template #headerTemplate_2>
+    <button
+      pButton
+      label="Agregar"
+      icon="fa-solid fa-plus"
+      class="p-button-rounded p-button-primary px-4"
+      (click)="agregar()"
+    ></button>
+  </ng-template>
+  <ng-template #contentTemplate_2>
+    <p-table
+      [value]="datos?.controles"
+      styleClass="p-datatable-sm app-table p-datatable-gridlines"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th rowspan="2" style="width: 80px">N° Batch</th>
+          <th rowspan="2" style="width: 80px">
+            Cantidad de producto x batch (kg)
+          </th>
+          <th colspan="2" class="text-center">remojo de habas</th>
+          <th colspan="2" class="text-center">fritura</th>
+          <th rowspan="2" class="text-center">
+            maquinista
+          </th>
+          <th rowspan="2" style="width: 30%" class="text-center">
+            observación
+          </th>
+        </tr>
+        <tr>
+          <th class="text-center">fecha de inicio</th>
+          <th class="text-center">hora de inicio</th>
+          <th class="text-center">fecha de inicio</th>
+          <th class="text-center">hora de inicio</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td class="text-center">{{ item.numeroBatch }}</td>
+          <td class="text-center">{{ item.cantidadBatch }}</td>
+          <td class="text-center">
+            {{ item.fechaHoraInicioReposo | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="text-center">
+            {{ item.fechaHoraInicioReposo | date : "HH:mm" }}
+          </td>
+          <td class="text-center">
+            {{ item.fechaHoraInicioFritura | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="text-center">
+            {{ item.fechaHoraInicioFritura | date : "HH:mm" }}
+          </td>
+          <td>{{ item.usuario }}</td>
+          <td>{{ item.observacion }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+</app-tarjeta-seccion>

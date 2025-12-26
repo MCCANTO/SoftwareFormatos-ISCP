@@ -1,0 +1,34 @@
+
+<div class="p-4">
+
+    <div class="p-fluid grid mb-2" [formGroup]="form">
+        <div class="field col-6">
+            <span class="p-float-label">
+                <p-inputNumber mode="decimal" [useGrouping]="false"
+                    formControlName="cantidadCaja"
+                >
+                </p-inputNumber>
+                <label for="dropdown"># Caja</label>
+            </span>
+        </div>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <p-inputNumber mode="decimal" [useGrouping]="false"
+                    formControlName="cantidadSobre"
+                >
+                </p-inputNumber>
+                <label for="dropdown"># Sobres</label>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"
+    ></button>
+    <button pButton label="Agregar" icon="fa-solid fa-plus" class="p-button-rounded p-button-primary px-5"
+        (click)="guardar()"
+    ></button>
+</div>

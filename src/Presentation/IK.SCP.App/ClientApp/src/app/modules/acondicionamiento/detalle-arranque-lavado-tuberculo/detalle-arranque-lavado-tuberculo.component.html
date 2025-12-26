@@ -1,0 +1,122 @@
+<div class="container-fluid">
+  <app-titulo-pagina
+    titulo="Checklist de Arranque de Lavado de Tubérculos"
+    (regresarAnt)="regresar()"
+  ></app-titulo-pagina>
+
+  <div class="row mb-3">
+    <div class="col-md-7">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Condiciones Básicas"
+        [contentTemplate]="contentTemplate_1"
+      >
+        <ng-template #contentTemplate_1>
+          <p-table [value]="arranque?.Condiciones" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Descripción</th>
+                <th
+                  class="fw-semibold text-center"
+                  style="width: 60px !important"
+                >
+                  No / Sí
+                </th>
+                <th style="width: 40%">observación</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-condicion>
+              <tr>
+                <td>
+                  {{ condicion.orden }}.- {{ condicion.nombre }}
+                  <span
+                    *ngIf="condicion.comentario"
+                    (click)="op.toggle($event)"
+                  >
+                    <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+                  </span>
+
+                  <p-overlayPanel #op>
+                    <ng-template pTemplate>
+                      <div style="max-width: 250px" class="text-justify">
+                        <i>{{ condicion.comentario }}</i>
+                      </div>
+                    </ng-template>
+                  </p-overlayPanel>
+                </td>
+                <td class="text-center" style="width: 80px">
+                  <p-inputSwitch
+                    [(ngModel)]="condicion.valor"
+                    [disabled]="true"
+                  ></p-inputSwitch>
+                </td>
+                <td class="p-fluid">
+                  <!-- <input type="text" pInputText /> -->
+                  <textarea
+                    pInputTextarea
+                    [(ngModel)]="condicion.observacion"
+                    [disabled]="true"
+                    [rows]="1"
+                  ></textarea>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+    <div class="col-md-5">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Verificación de Equipo"
+        [contentTemplate]="contentTemplate_2"
+      >
+        <ng-template #contentTemplate_2>
+          <p-table [value]="arranque?.Verificaciones">
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th>Usuario</th>
+                <th class="text-center">Fecha y Hora</th>
+                <th class="text-center">Finalizado</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-verif>
+              <tr>
+                <td class="text-center">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="fa-solid fa-magnifying-glass fa-xl"
+                    class="p-button-rounded p-button-success p-button-text"
+                    (click)="verVerificacion(verif)"
+                  ></button>
+                </td>
+                <td>{{ verif.usuario }}</td>
+                <td class="text-center">
+                  {{ verif.fecha | date : "dd/MM/yyyy hh:mm" }}
+                </td>
+                <td class="text-center">
+                  <i
+                    *ngIf="verif.cerrado"
+                    class="fa-solid fa-check fa-xl text-success"
+                  ></i>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

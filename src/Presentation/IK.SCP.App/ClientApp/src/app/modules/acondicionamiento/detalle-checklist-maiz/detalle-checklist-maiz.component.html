@@ -1,0 +1,210 @@
+<div *ngIf="arranque">
+    <app-titulo-pagina
+      titulo="Checklist de Arranque de Acondicionamiento de Maíz"
+      (regresarAnt)="regresar()"
+    >
+      <!-- TODO: Se agrego el Boton de Impresion -->
+      <div class="after-title">
+        <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+        <button pButton
+                pRipple
+                type="button"
+                icon="fa-solid fa-print fa-xl"
+                class="p-button-rounded p-button-success p-button-text"
+                (click)="printCheckListArranqueMaiz()"></button>
+      </div>
+    </app-titulo-pagina>
+
+    <div class="row mb-3">
+      <div class="col-md-7">
+        <app-tarjeta-seccion
+          icono="fa-solid fa-caret-right"
+          titulo="Condiciones Básicas"
+          [contentTemplate]="contentTemplate_1"
+        >
+          <ng-template #contentTemplate_1>
+            <p-table [value]="arranque.Condiciones">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Descripción</th>
+                    <th
+                      class="fw-semibold text-center"
+                      style="width: 80px !important"
+                    >
+                      No / Sí
+                    </th>
+                    <th>Observación</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-condicion>
+                  <tr>
+                    <td>
+                      {{ condicion.orden }}.- {{ condicion.nombre }}
+                      <span *ngIf="condicion.comentario" (click)="op.toggle($event)">
+                        <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+                      </span>
+
+                      <p-overlayPanel #op>
+                        <ng-template pTemplate>
+                          <div style="max-width: 250px" class="text-justify">
+                            <i>{{ condicion.comentario }}</i>
+                          </div>
+                        </ng-template>
+                      </p-overlayPanel>
+                    </td>
+                    <td class="text-center" style="width: 80px">
+                      <p-inputSwitch [(ngModel)]="condicion.valor"
+                        [disabled]="arranque.Cerrado"
+                      ></p-inputSwitch>
+                    </td>
+                    <td>
+                        {{ condicion.observacion }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            <!-- <app-listado-condicion
+              [condiciones]="arranque.Condiciones"
+
+            ></app-listado-condicion> -->
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+      <div class="col-md-5">
+        <app-tarjeta-seccion
+          icono="fa-solid fa-caret-right"
+          titulo="Verificación de Equipo"
+          [contentTemplate]="contentTemplate_2"
+        >
+          <ng-template #contentTemplate_2>
+            <p-table [value]="arranque.Verificaciones">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th>Usuario</th>
+                  <th class="text-center">Fecha y Hora</th>
+                  <th class="text-center">Finalizado</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-verif>
+                <tr>
+                  <td class="text-center">
+                    <button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="fa-solid fa-magnifying-glass fa-xl"
+                      class="p-button-rounded p-button-success p-button-text"
+                      (click)="verVerificacion(verif)"
+                    ></button>
+                  </td>
+                  <td>{{ verif.usuario }}</td>
+                  <td class="text-center">
+                    {{ verif.fecha | date : "dd/MM/yyyy hh:mm" }}
+                  </td>
+                  <td class="text-center">
+                    <i
+                      *ngIf="verif.cerrado"
+                      class="fa-solid fa-check fa-xl text-success"
+                    ></i>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <app-tarjeta-seccion
+          icono="fa-solid fa-caret-right"
+          titulo="Variables Básicas"
+          [contentTemplate]="contentTemplate_3"
+        >
+          <ng-template #contentTemplate_3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Descripción</th>
+                  <th class="text-center">Valor</th>
+                  <th style="width: 50%">observación</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="align-middle">
+                    Temperatura de agua en marmita (°C)
+                  </td>
+                  <td class="text-center" style="width: 150px">
+                    <p-inputNumber
+                      mode="decimal"
+                      locale="en-US"
+                      [maxFractionDigits]="2"
+                      [(ngModel)]="arranque.Temperatura"
+                      [disabled]="true"
+                    ></p-inputNumber>
+                  </td>
+                  <td class="p-fluid">
+                    <textarea
+                      pInputTextarea
+                      [(ngModel)]="arranque.ObservacionTemperatura"
+                      [rows]="1"
+                      [disabled]="true"
+                      maxlength="255"
+                    ></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-md-12">
+        <app-tarjeta-seccion
+          icono="fa-solid fa-caret-right"
+          titulo="Observaciones"
+          [contentTemplate]="contentTemplate_4"
+        >
+          <ng-template #contentTemplate_4>
+            <div class="p-fluid grid">
+
+              <div class="field col-12">
+                <p-table
+                  [value]="arranque.Observaciones"
+                  styleClass="p-datatable-sm"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Usuario</th>
+                      <th>Fecha Hora</th>
+                      <th>Observación</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-observacion>
+                    <tr>
+                      <td>{{ observacion.usuario }}</td>
+                      <td class="text-center">
+                        {{ observacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+                      </td>
+                      <td style="width: 70%">{{ observacion.observacion }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+    </div>
+  </div>
+  <p-toast position="top-right"></p-toast>
+  <p-confirmDialog
+    header="Confirmación"
+    [style]="{ width: '30vw' }"
+    acceptButtonStyleClass="p-button-warning"
+    rejectButtonStyleClass="p-button-outlined"
+    acceptLabel="Sí"
+  ></p-confirmDialog>

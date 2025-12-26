@@ -1,0 +1,43 @@
+<div class="container">
+
+  <div class="mb-4">
+
+    <p-table [value]="variables" dataKey="padre" sortField="padre" sortMode="single" rowGroupMode="subheader" groupRowsBy="padre">
+        <ng-template pTemplate="groupheader" let-variable let-rowIndex="rowIndex" let-expanded="expanded">
+            <tr>
+                <td colspan="3" class="d-flex align-items-center" [pRowToggler]="variable" >
+                    <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    <span class="font-bold ml-2">{{ variable.padre }}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-variable>
+            <tr>
+                <td style="padding-left: 50px;">
+                    {{variable.nombre}}
+                </td>
+                <td class="text-center" style="min-width: 400px;">
+                    <p-selectButton [options]="valores" [(ngModel)]="variable.valor" optionLabel="texto" optionValue="id"
+                        [disabled]="variable.cerrado"
+                    ></p-selectButton>
+                </td>
+                <td class="p-fluid" style="width: 250px;">
+                    <textarea pInputTextarea [(ngModel)]="variable.observacion" [rows]="1" [disabled]="variable.cerrado"
+                    ></textarea>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+  </div>
+
+  <div style="position: fixed; left: 0; bottom: 0; width: 100%;">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"
+    ></button>
+    <button pButton label="Agregar" icon="fa-solid fa-plus" class="p-button-rounded p-button-primary px-5"
+        (click)="guardar()"
+    ></button>
+  </div>
+
+</div>

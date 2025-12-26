@@ -1,0 +1,77 @@
+
+<p-table [value]="variablesBasicas" dataKey="categoria">
+
+    <ng-template pTemplate="body" let-variable let-expanded="expanded">
+        <tr [pRowToggler]="variable" class="pointer">
+            <td style="width: 30px;">
+                <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-info p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            </td>
+            <td class="fs-5 fw-bold">{{variable.categoria}}</td>
+        </tr>
+    </ng-template>
+
+
+    <ng-template pTemplate="rowexpansion" let-variable>
+        <tr>
+            <td colspan="2">
+                <p-table [value]="variable.verificaciones" rowGroupMode="rowspan" groupRowsBy="nombre" sortField="orden" [sortOrder]="1">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th class="fw-semibold text-center">Operativo</th>
+                            <th class="fw-semibold text-center">Limpio</th>
+                            <th class="fw-semibold text-center">Observaciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-variable let-rowIndex="rowIndex" let-rowgroup="rowgroup" let-rowspan="rowspan">
+                        <tr>
+                            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+            
+                                {{variable.nombre}}
+                                <span *ngIf="variable.comentario" (click)="op.toggle($event)">
+                                    <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+                                </span>
+            
+                                <p-overlayPanel #op>
+                                    <ng-template pTemplate>
+                                        <div style="max-width: 250px;" class="text-justify">
+                                            <i>{{ variable.comentario }}</i>
+                                        </div>
+                                    </ng-template>
+                                </p-overlayPanel>
+                            </td>
+                            <td>
+                                {{variable.detalle}}
+                            </td>
+                            <td class="text-center" style="width: 20%;">
+                                <p-selectButton [options]="calificaciones" optionLabel="texto" optionValue="valor"
+                                    [(ngModel)]="variable.operativo" [disabled]="variable.cerrado"
+                                ></p-selectButton>
+                            </td>
+                            <td class="text-center" style="width: 20%;">
+                                <p-selectButton [options]="calificaciones" optionLabel="texto" optionValue="valor"
+                                    [(ngModel)]="variable.limpio" [disabled]="variable.cerrado"
+                                ></p-selectButton>
+                            </td>
+                            <td class="p-fluid" style="width: 250px;">
+                                <textarea pInputTextarea [(ngModel)]="variable.observacion" [rows]="1"
+                                [disabled]="variable.cerrado"
+                                ></textarea>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<div class="ui-dialog-footer text-center pt-3">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"
+    ></button>
+    <button pButton label="Agregar" icon="fa-solid fa-plus" class="p-button-rounded p-button-primary px-5"
+        (click)="agregar()" *ngIf="esEditable"
+    ></button>
+</div>

@@ -1,0 +1,22 @@
+<div class="container-fluid py-2">
+  <app-custom-navbar
+    [headerTemplate]="headerTemplate"
+    subtitulo="Envasado (Granel)"
+    classSubtitulo="color-env-gra"
+  >
+    <ng-template #headerTemplate>
+      <span class="navbar-text me-5 pointer" *ngIf="dataEnv">
+        <strong
+          ><i class="fa-solid fa-boxes-packing"></i>
+          {{ dataEnv.envasadora.Nombre }}
+        </strong>
+      </span>
+    </ng-template>
+  </app-custom-navbar>
+
+  <app-banner-orden-granel></app-banner-orden-granel>
+
+  <div class="mt-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>

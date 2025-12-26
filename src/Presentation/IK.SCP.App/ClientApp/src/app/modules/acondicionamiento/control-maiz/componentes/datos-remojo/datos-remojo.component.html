@@ -1,0 +1,94 @@
+<div class="row justify-content-center mb-3">
+  <div class="col-md-9">
+    <div class="table-responsive">
+      <table class="table table-bordered app-table">
+        <tr>
+          <th style="width: 150px">N° TANQUE DE REMOJO</th>
+          <th *ngFor="let item of datos?.resumen" class="text-center">
+            {{ item.numeroTanque }}
+          </th>
+        </tr>
+        <tr>
+          <th>INICIO DE REMOJO</th>
+          <td *ngFor="let item of datos?.resumen" class="text-center">
+            {{ item.fechaInicio | date : "dd/MM/yyyy HH:mm" }}
+          </td>
+        </tr>
+        <tr>
+          <th>FIN DE REMOJO</th>
+          <td *ngFor="let item of datos?.resumen" class="text-center">
+            {{ item.fechaFin | date : "dd/MM/yyyy HH:mm" }}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex align-items-center justify-content-between mb-2 px-2">
+  <h6 class="mb-0">
+    <i class="fa-solid fa-caret-right"></i> LAVADO (CAMBIO DE AGUA Y AGITACIÓN
+    DEL PRODUCTO REMOJADO)
+  </h6>
+  <button
+    pButton
+    label="Agregar"
+    icon="fa-solid fa-plus"
+    class="p-button-rounded p-button-primary px-4"
+    (click)="agregar()"
+  ></button>
+</div>
+
+<p-table
+  [value]="datos?.controles"
+  styleClass="p-datatable-sm app-table p-datatable-gridlines"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th rowspan="2"></th>
+      <th class="text-center" rowspan="2" style="width: 80px">
+        N° Tanque en remojo
+      </th>
+      <th class="text-center" rowspan="2">Olor</th>
+      <th class="text-center" colspan="2">Cambio de Agua</th>
+      <th class="text-center" colspan="2">Agitación del producto remojado</th>
+      <th rowspan="2" style="width: 30%">observaciones</th>
+    </tr>
+    <tr>
+      <th class="text-center">ph de agua (antes)</th>
+      <th class="text-center">ph de agua (después)</th>
+      <th class="text-center" style="width: 120px">Inicio de agitación</th>
+      <th class="text-center" style="width: 120px">fin de agitación</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr>
+      <td class="text-center" style="width: 40px">
+        <button
+          *ngIf="!item.cerrado"
+          pButton
+          pRipple
+          type="button"
+          icon="fa fa-edit fa-xl"
+          class="p-button-rounded p-button-success"
+          (click)="editar(item)"
+        ></button>
+      </td>
+      <td class="text-center">{{ item.numeroTanque }}</td>
+      <td class="text-center">{{ item.olorDesc }}</td>
+      <td class="text-center">{{ item.phAntes }}</td>
+      <td class="text-center">{{ item.phDespues }}</td>
+      <td class="text-center">
+        {{ item.inicioAgitacion | date : "dd/MM/yyyy HH:mm" }}
+        <!-- {{ item.inicioAgitacion }} -->
+      </td>
+      <td class="text-center">
+        {{ item.finAgitacion | date : "dd/MM/yyyy HH:mm" }}
+        <!-- {{ item.finAgitacion }} -->
+      </td>
+      <td>
+        <span [innerHTML]="item.observacion"></span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

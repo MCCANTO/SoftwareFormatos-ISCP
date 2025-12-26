@@ -1,0 +1,470 @@
+<app-titulo-pagina
+  titulo="Checklist de Arranque de Envasado"
+  (regresarAnt)="regresar()"
+>
+  <!-- TODO: Se agrego el Boton de Impresion -->
+  <div class="after-title">
+    <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+    <button pButton
+            pRipple
+            type="button"
+            icon="fa-solid fa-print fa-xl"
+            class="p-button-rounded p-button-success p-button-text"
+            (click)="printCheckListArranqueEnvasado()"></button>
+  </div>
+</app-titulo-pagina>
+
+<div class="mt-3">
+  <p-tabView>
+    <p-tabPanel header="DATOS PRINCIPALES">
+      <div class="row">
+        <div class="col-md-5">
+          <app-tarjeta-seccion
+            icono="fa fa-caret-right"
+            titulo="Condiciones Básicas"
+            [contentTemplate]="contentTemplate_1"
+          >
+            <ng-template #contentTemplate_1>
+              <p-table [value]="condiciones" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Descripción</th>
+                    <th
+                      class="fw-semibold text-center"
+                      style="width: 60px !important"
+                    >
+                      No / Sí
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-condicion>
+                  <tr>
+                    <td>
+                      {{ condicion.Orden }}.- {{ condicion.Nombre }}
+                      <span
+                        *ngIf="condicion.Comentario"
+                        (click)="op.toggle($event)"
+                      >
+                        <i class="fa fa-circle-question fa-xl pointer"></i>
+                      </span>
+
+                      <p-overlayPanel #op>
+                        <ng-template pTemplate>
+                          <div style="max-width: 250px" class="text-justify">
+                            <i>{{ condicion.Comentario }}</i>
+                          </div>
+                        </ng-template>
+                      </p-overlayPanel>
+                    </td>
+                    <td class="text-center" style="width: 80px">
+                      <p-inputSwitch
+                        [(ngModel)]="condicion.Valor"
+                        [disabled]="!PERMISOS.ESCRITURA || condicion.Cerrado"
+                      ></p-inputSwitch>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </ng-template>
+          </app-tarjeta-seccion>
+        </div>
+
+        <div class="col-md-7">
+          <app-tarjeta-seccion
+            icono="fa fa-caret-right"
+            titulo="Variables Básicas"
+            [contentTemplate]="contentTemplate_2"
+          >
+            <ng-template #contentTemplate_2>
+              <p-table [value]="variablesBasicas" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <!-- <th style="width: 40%;">Tipo</th> -->
+                    <!-- <th>Item</th> -->
+                    <th>Tipo</th>
+                    <th>Usuario</th>
+                    <th class="text-center">Fecha Hora</th>
+                    <th class="text-center">Finalizado</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-variable>
+                  <tr>
+                    <td class="text-center">
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="fa fa-magnifying-glass fa-xl"
+                        class="p-button-rounded p-button-success p-button-text"
+                        (click)="
+                          cargarVariablesBasicasDetalle(
+                            variable.ArranqueVariableBasicaCabId,
+                            variable.Cerrado,
+                            variable.TipoId,
+                            variable.Maquinista
+                          )
+                        "
+                      ></button>
+                    </td>
+                    <!-- <td class="text-center">{{variable.NroGrupo}}</td> -->
+                    <td>{{ variable.Tipo }}</td>
+                    <td>{{ variable.UsuarioCreacion }}</td>
+                    <td class="text-center">
+                      {{ variable.FechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+                    </td>
+                    <td class="text-center">
+                      <i
+                        *ngIf="variable.Cerrado"
+                        class="fa fa-check fa-xl text-success"
+                      ></i>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </ng-template>
+          </app-tarjeta-seccion>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <app-tarjeta-seccion
+            icono="fa fa-caret-right"
+            titulo="Imágenes de Codificación de Sobre"
+            [contentTemplate]="contentTemplate_3"
+          >
+            <ng-template #contentTemplate_3>
+              <p-table [value]="codificacionSobres" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <th>Usuario</th>
+                    <th class="text-center">Fecha y Hora</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sobre>
+                  <tr>
+                    <td class="text-center">
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="fa fa-magnifying-glass fa-xl"
+                        class="p-button-rounded p-button-success p-button-text"
+                        (click)="
+                          verCodificacion(sobre.imagen, sobre.contentType)
+                        "
+                      ></button>
+                    </td>
+                    <td>{{ sobre.usuarioCreacion }}</td>
+                    <td class="text-center">
+                      {{ sobre.fechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </ng-template>
+          </app-tarjeta-seccion>
+        </div>
+
+        <div class="col-md-6">
+          <app-tarjeta-seccion
+            icono="fa fa-caret-right"
+            titulo="Imágenes de Codificación de Caja"
+            [contentTemplate]="contentTemplate_4"
+          >
+            <ng-template #contentTemplate_4>
+              <p-table [value]="codificacionCajas" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <th>Usuario</th>
+                    <th class="text-center">Fecha y Hora</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-caja>
+                  <tr>
+                    <td class="text-center">
+                      <button
+                        pButton
+                        pRipple
+                        type="button"
+                        icon="fa fa-magnifying-glass fa-xl"
+                        class="p-button-rounded p-button-success p-button-text"
+                        (click)="verCodificacion(caja.imagen, caja.contentType)"
+                      ></button>
+                    </td>
+                    <td>{{ caja.usuarioCreacion }}</td>
+                    <td class="text-center">
+                      {{ caja.fechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </ng-template>
+          </app-tarjeta-seccion>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="COMPONENTES Y OBSERVACIONES">
+      <div class="px-4">
+        <div class="row">
+          <div class="col-md-5">
+            <app-tarjeta-seccion
+              icono="fa fa-caret-right"
+              titulo="Contramuestras"
+              [contentTemplate]="contentTemplate_5"
+            >
+              <ng-template #contentTemplate_5>
+                <p-table [value]="contramuestras" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th class="text-center"># Caja</th>
+                      <th class="text-center"># Sobres</th>
+                      <th>Usuario</th>
+                      <th>Fecha</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-contramuestra>
+                    <tr>
+                      <td class="text-center">
+                        <strong>{{ contramuestra.CantidadCaja }}</strong>
+                      </td>
+                      <td class="text-center">
+                        <strong>{{ contramuestra.CantidadSobre }}</strong>
+                      </td>
+                      <td>{{ contramuestra.UsuarioCreacion }}</td>
+                      <td class="text-center">
+                        {{
+                        contramuestra.FechaCreacion
+                          | date : "dd/MM/yyyy HH:mm"
+                        }}
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </ng-template>
+            </app-tarjeta-seccion>
+          </div>
+          <div class="col-md-7">
+            <app-tarjeta-seccion
+              icono="fa fa-caret-right"
+              titulo="Empacador / Paletizador"
+              [contentTemplate]="contentTemplate_6"
+            >
+              <ng-template #contentTemplate_6>
+                <p-table [value]="participantes" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Empacador</th>
+                      <th>Paletizador</th>
+                      <th class="text-center">Usuario</th>
+                      <th class="text-center">Fecha y Hora</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-participante>
+                    <tr>
+                      <td>
+                        <ul>
+                          <li *ngFor="let item of participante.empacadores">
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </td>
+                      <td>
+                        <ul>
+                          <li *ngFor="let item of participante.paletizadores">
+                            {{ item }}
+                          </li>
+                        </ul>
+                      </td>
+                      <td class="text-center">{{ participante.usuario }}</td>
+                      <td class="text-center">
+                        {{ participante.fecha | date : "dd/MM/yyyy HH:mm" }}
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </ng-template>
+            </app-tarjeta-seccion>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <app-tarjeta-seccion
+              icono="fa fa-caret-right"
+              titulo="Componentes"
+              [contentTemplate]="contentTemplate_7"
+            >
+              <ng-template #contentTemplate_7>
+                <p-table [value]="componentes" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Fecha Registro</th>
+                      <th>Componente</th>
+                      <th>
+                        Lote
+                        <span (click)="op.toggle($event)">
+                          <i class="fa fa-circle-question fa-xl pointer"></i>
+                        </span>
+                      </th>
+                      <th>% Humedad</th>
+                      <th class="text-center">Evaluacion Sensorial</th>
+                      <th>Observación</th>
+                      <th>Usuario</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-componente>
+                    <tr>
+                      <td>
+                        {{
+                        componente.FechaCreacion | date : "dd/MM/yyyy HH:mm"
+                        }}
+                      </td>
+                      <td>{{ componente.Componente }}</td>
+                      <td>{{ componente.Lote }}</td>
+                      <td>{{ componente.Humedad }}</td>
+                      <td class="text-center">
+                        <b *ngIf="componente.EvaluacionSensorial">Conforme</b>
+                        <b *ngIf="!componente.EvaluacionSensorial"
+                        >No Conforme</b
+                        >
+                      </td>
+                      <td>{{ componente.Observacion }}</td>
+                      <td>{{ componente.UsuarioCreacion }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </ng-template>
+            </app-tarjeta-seccion>
+            <p-overlayPanel #op>
+              <ng-template pTemplate>
+                <div style="max-width: 250px" class="text-justify">
+                  <i>Si es de Línea, incluir la letra L</i>
+                </div>
+              </ng-template>
+            </p-overlayPanel>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <app-tarjeta-seccion
+              icono="fa fa-caret-right"
+              titulo="Observaciones"
+              [contentTemplate]="contentTemplate_8"
+            >
+              <ng-template #contentTemplate_8>
+                <p-table [value]="observaciones" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th class="text-center">Fecha Hora</th>
+                      <th>Usuario</th>
+                      <th style="width: 65%">Observación</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-obs>
+                    <tr>
+                      <td class="text-center">
+                        {{ obs.FechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+                      </td>
+                      <td>{{ obs.UsuarioCreacion }}</td>
+                      <td>{{ obs.Observacion }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </ng-template>
+            </app-tarjeta-seccion>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="INSPECCIÓN Y REVISIÓN">
+      <div class="px-4">
+        <div class="row">
+          <div class="col">
+            <app-tarjeta-seccion
+              icono="fa fa-caret-right"
+              titulo="Inspección del Etiquetado"
+              [contentTemplate]="contentTemplate_9"
+            >
+              <ng-template #contentTemplate_9>
+                <p-table [value]="inspecciones" styleClass="p-datatable-sm">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th class="text-center">Fecha Registro</th>
+                      <th class="text-center">Cantidad de Cajas</th>
+                      <th>Persona que etiqueta</th>
+                      <th>Posición de la etiqueta</th>
+                      <th>Inspector</th>
+                      <th>Usuario</th>
+                      <th class="text-center">Imagen</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-inspeccion>
+                    <tr>
+                      <td class="text-center">
+                        {{
+                        inspeccion.fechaCreacion | date : "dd/MM/yyyy HH:mm"
+                        }}
+                      </td>
+                      <td class="text-center">{{ inspeccion.cantidadCaja }}</td>
+                      <td>{{ inspeccion.etiquetador }}</td>
+                      <td>{{ inspeccion.posicion }}</td>
+                      <td>{{ inspeccion.inspector }}</td>
+                      <td>{{ inspeccion.usuarioCreacion }}</td>
+                      <td class="text-center">
+                        <button
+                          pButton
+                          pRipple
+                          type="button"
+                          icon="fa fa-magnifying-glass fa-xl"
+                          class="p-button-rounded p-button-success p-button-text"
+                          (click)="
+                            verCodificacion(
+                              inspeccion.imagen,
+                              inspeccion.contentType
+                            )
+                          "
+                        ></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </ng-template>
+            </app-tarjeta-seccion>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <app-tarjeta-seccion
+              icono="fa fa-caret-right"
+              titulo="Revisión"
+              [contentTemplate]="contentTemplate_10"
+            >
+              <ng-template #contentTemplate_10>
+                <div class="row">
+                  <div class="col-md-4" *ngFor="let revision of revisiones">
+                    <div
+                      class="alert alert-success d-flex justify-content-between align-items-center"
+                      role="alert"
+                    >
+                      <i class="fa fa-circle-check fa-2xl"></i>
+                      <span>{{ revision.UsuarioCreacion }}</span>
+                      <span>{{
+                        revision.FechaCreacion | date : "dd/MM/yyyy HH:mm"
+                        }}</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </app-tarjeta-seccion>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>

@@ -1,0 +1,124 @@
+<div class="row mb-3">
+
+    <div class="col-md-5">
+        <p-card>
+            <div class="p-fluid grid mt-2" *ngIf="!esLectura">
+                <div class="field col-10">
+                    <span class="p-float-label">
+                        
+                        <p-dropdown [options]="panelistas" [(ngModel)]="panelista" placeholder="Panelista"
+                        optionLabel="nombre" [filter]="true" filterBy="nombre" [showClear]="true">
+                        </p-dropdown>
+
+                        <label>Panelista</label>
+                    </span>
+                </div>
+                <div class="col-2">
+                    <button pButton pRipple type="button" icon="fa-solid fa-plus" class="p-button-rounded"
+                        (click)="agregarPanelista()"
+                    ></button>
+                </div>
+            </div>
+    
+            <p-table [value]="panelistasSelected">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Panelista</th>
+                        <th *ngIf="!esLectura"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-panelista>
+                    <tr>
+                        <td class="py-4">{{panelista.nombre}}</td>
+                        <td class="py-4" class="text-center" style="width: 40px !important;" *ngIf="!esLectura">
+                            <button pButton pRipple type="button" icon="fa-solid fa-trash fa-xl" 
+                                class="p-button-rounded p-button-danger p-button-text"
+                                (click)="eliminarPanelista(panelista)"
+                            ></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <!-- {{ panelistasSelected | json }} -->
+    
+        </p-card>
+    </div>
+
+    <div class="col-md-7">
+        <p-card>
+            <table>
+                <tr>
+                    <td class="py-4">APARIENCIA GENERAL</td>
+                    <td class="py-4" class="text-center ps-4">
+                        <p-selectButton [options]="calificaciones" optionLabel="valor" optionValue="valor"
+                            [(ngModel)]="apariencia" (onChange)="calcularCalificacion()" [disabled]="esLectura"
+                        ></p-selectButton>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-4">COLOR</td>
+                    <td class="py-4" class="text-center ps-4">
+                        <p-selectButton [options]="calificaciones" optionLabel="valor" optionValue="valor"
+                            [(ngModel)]="color"  (onChange)="calcularCalificacion()" [disabled]="esLectura"
+                        ></p-selectButton>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-4">OLOR</td>
+                    <td class="py-4" class="text-center ps-4">
+                        <p-selectButton [options]="calificaciones" optionLabel="valor" optionValue="valor"
+                            [(ngModel)]="olor"  (onChange)="calcularCalificacion()" [disabled]="esLectura"
+                        ></p-selectButton>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-4">SABOR</td>
+                    <td class="py-4" class="text-center ps-4">
+                        <p-selectButton [options]="calificaciones" optionLabel="valor" optionValue="valor"
+                            [(ngModel)]="sabor" (onChange)="calcularCalificacion()" [disabled]="esLectura"
+                        ></p-selectButton>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-4">TEXTURA</td>
+                    <td class="py-4" class="text-center ps-4">
+                        <p-selectButton [options]="calificaciones" optionLabel="valor" optionValue="valor"
+                            [(ngModel)]="textura" (onChange)="calcularCalificacion()" [disabled]="esLectura"
+                        ></p-selectButton>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-3"><b>CALIFICACIÓN FINAL</b></td>
+                    <td class="py-3" class="text-center ps-4" [ngStyle]="{ 'background-color': colorStyle }">
+                        <span *ngIf="calificacion" class="fs-5 fw-bold">{{ calificacion }}</span>
+                        <!-- <p-selectButton [options]="calificaciones" optionLabel="valor" optionValue="valor"
+                            [(ngModel)]="calificacion" [disabled]="true"
+                        ></p-selectButton> -->
+                    </td>
+                </tr>
+            </table>
+        </p-card>
+    </div>
+    					                    
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p-card>
+            <div class="p-fluid grid">
+                <div class="field col-12">
+                    <span class="p-float-label">
+                        <textarea pInputTextarea [(ngModel)]="observacion" [disabled]="esLectura"></textarea>
+                        <label>Observación</label>
+                    </span>
+                </div>
+            </div>
+        </p-card>
+    </div>
+</div>
+<div class="ui-dialog-footer text-center pt-3">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"></button>
+    <button pButton label="Guardar" icon="fa-solid fa-save" class="p-button-rounded p-button-primary px-5"
+        (click)="guardar()" *ngIf="!esLectura"></button>
+</div>

@@ -1,0 +1,81 @@
+<div class="container" [formGroup]="form">
+  <div class="mb-3 row">
+    <label class="col-md-4 col-form-label">Etapa</label>
+    <div class="col-md-8 p-fluid">
+      <input type="text" pInputText formControlName="etapa" />
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-md-4 col-form-label">Peso (g)</label>
+    <div class="col-md-4 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="2"
+        formControlName="peso"
+        [useGrouping]="false"
+      ></p-inputNumber>
+    </div>
+  </div>
+  <ng-container formArrayName="defectos">
+    <ng-container *ngFor="let defectoForm of defectos.controls; let i = index">
+      <div class="mb-3 row" [formGroupName]="i">
+        <label class="col-md-4 col-form-label">
+          {{ defectoForm.get("nombre")?.value }}
+        </label>
+        <div class="col-md-4 p-fluid">
+          <p-inputNumber
+            mode="decimal"
+            locale="en-US"
+            [maxFractionDigits]="2"
+            formControlName="valor"
+            [useGrouping]="false"
+          ></p-inputNumber>
+        </div>
+        <label class="col-md-1 col-form-label text-end">%</label>
+        <div class="col-md-3 p-fluid">
+          <p-inputNumber
+            mode="decimal"
+            locale="en-US"
+            [maxFractionDigits]="2"
+            formControlName="porcentaje"
+            [useGrouping]="false"
+          ></p-inputNumber>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <div class="mb-3 row">
+    <label class="col-md-4 col-form-label">Inspector</label>
+    <div class="col-md-8 p-fluid">
+      <input type="text" pInputText formControlName="inspector" />
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-md-4 col-form-label">Observación</label>
+    <div class="col-md-8 p-fluid">
+      <textarea
+        rows="3"
+        pInputTextarea
+        formControlName="observacion"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa-solid fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Agregar"
+    icon="fa-solid fa-plus"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+  ></button>
+</div>

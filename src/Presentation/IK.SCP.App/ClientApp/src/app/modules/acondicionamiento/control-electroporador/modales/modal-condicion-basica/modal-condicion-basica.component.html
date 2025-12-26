@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="row form-group mb-3">
+    <label class="col-form-label col-md-auto">Tipo</label>
+    <div class="col-md-4 p-fluid">
+      <p-dropdown
+        [options]="tipos"
+        placeholder="Seleccione"
+        optionLabel="nombre"
+        optionValue="parametroGeneralId"
+        [(ngModel)]="tipoId"
+        [disabled]="!esEditable"
+      ></p-dropdown>
+    </div>
+  </div>
+  <p-table [value]="condiciones" styleClass="p-datatable-sm mb-3">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>descripción</th>
+        <th class="text-center">valor</th>
+        <th class="text-center">OBSERVACIÓN</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-condicion>
+      <tr>
+        <td style="width: 40%">
+          {{ condicion.nombre }}
+          <span *ngIf="condicion.comentario" (click)="op.toggle($event)">
+            <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+          </span>
+
+          <p-overlayPanel #op>
+            <ng-template pTemplate>
+              <div style="max-width: 250px" class="text-justify">
+                <i>{{ condicion.comentario }}</i>
+              </div>
+            </ng-template>
+          </p-overlayPanel>
+        </td>
+        <td class="text-center p-fluid" style="max-width: 70px">
+          <p-inputNumber
+            inputId="minmaxfraction"
+            mode="decimal"
+            locale="en-US"
+            [maxFractionDigits]="2"
+            [(ngModel)]="condicion.valor"
+            [disabled]="!esEditable"
+          >
+          </p-inputNumber>
+        </td>
+        <td class="p-fluid">
+          <textarea
+            pInputTextarea
+            [(ngModel)]="condicion.observacion"
+            [rows]="1"
+            [disabled]="!esEditable"
+          ></textarea>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<div class="p-dialog-footer text-center">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Guardar"
+    icon="fa fa-save"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+    *ngIf="esEditable"
+    [disabled]="deshabilitarBotonGuardar"
+  ></button>
+</div>

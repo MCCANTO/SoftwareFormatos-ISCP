@@ -1,0 +1,122 @@
+<div class="container-fluid">
+  <app-titulo-pagina
+    titulo="Control de Parámetros de Calidad de Aceite"
+    (regresarAnt)="regresar()"
+  >
+    <!-- TODO: Se agrego el Boton de Impresion -->
+    <div class="after-title">
+      <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+      <button pButton
+              pRipple
+              type="button"
+              icon="fa-solid fa-print fa-xl"
+              class="p-button-rounded p-button-success p-button-text"
+              (click)="printControlParametrosCalidadAceite()"></button>
+
+      <button pButton
+              pRipple
+              type="button"
+              icon="fa fa-file-csv fa-xl"
+              class="p-button-rounded p-button-success p-button-text"
+              (click)="exportExcel()"></button>
+    </div>
+
+
+
+  </app-titulo-pagina>
+
+  <div class="row">
+    <div class="col-md-12">
+      <app-tarjeta-seccion [contentTemplate]="contentTemplate_1">
+        <ng-template #contentTemplate_1>
+          <div class="row mb-4" [formGroup]="form">
+            <div class="col-auto col-form-label">Fecha:</div>
+            <div class="col-auto">
+              <p-calendar
+                selectionMode="range"
+                [showIcon]="true"
+                formControlName="fecha"
+                dateFormat="dd/mm/yy"
+              ></p-calendar>
+            </div>
+            <div class="col-auto col-form-label">Línea:</div>
+            <div class="col-md-2 p-fluid">
+              <p-dropdown
+                [options]="freidoras"
+                optionLabel="Nombre"
+                optionValue="Id"
+                formControlName="lineaId"
+              ></p-dropdown>
+            </div>
+            <div class="col-auto col-form-label">Orden:</div>
+            <div class="col-md-2 p-fluid">
+              <input type="text" pInputText formControlName="ordenId" />
+            </div>
+            <div class="col-auto">
+              <button
+                pButton
+                label="Buscar"
+                icon="fa fa-search"
+                class="p-button-rounded p-button-info px-4"
+                (click)="buscar()"
+              ></button>
+            </div>
+            <div class="col-auto" *ngIf="PERMISOS.ESCRITURA">
+              <button
+                pButton
+                label="Agregar"
+                icon="fa fa-plus"
+                class="p-button-rounded p-button-primary px-4"
+                (click)="agregar()"
+              ></button>
+            </div>
+          </div>
+          <p-table
+            [value]="controles"
+            styleClass="p-datatable-sm app-table"
+            [tableStyle]="{ 'min-width': '140rem' }"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="fw-semibold" style="min-width: 120px;">Fecha Hora</th>
+                <th class="fw-semibold" style="min-width: 120px;">línea</th>
+                <th class="text-center fw-semibold">orden</th>
+                <th class="fw-semibold">producto</th>
+                <th class="fw-semibold">sal/sabor</th>
+                <th class="fw-semibold">etapa proceso</th>
+                <th class="fw-semibold">aceite</th>
+                <th class="fw-semibold">inicio de fuente</th>
+                <th class="fw-semibold">relleno de fritura</th>
+                <th class="text-center fw-semibold">agl</th>
+                <th class="text-center fw-semibold">cp</th>
+                <th class="text-center fw-semibold">color</th>
+                <th class="text-center fw-semibold">olor</th>
+                <th class="fw-semibold">usuario</th>
+                <th class="fw-semibold">observación</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-control>
+              <tr>
+                <td>{{ control.fechaHora | date : "dd/MM/yyyy HH:mm" }}</td>
+                <td>{{ control.linea }}</td>
+                <td class="text-center">{{ control.ordenId }}</td>
+                <td>{{ control.producto }}</td>
+                <td>{{ control.sabor }}</td>
+                <td>{{ control.etapa }}</td>
+                <td>{{ control.aceite }}</td>
+                <td>{{ control.inicioFuente }}</td>
+                <td>{{ control.rellenoFuente }}</td>
+                <td class="text-center" [ngStyle]="{'background-color': control.agl_color}">{{ control.agl }}</td>
+                <td class="text-center" [ngStyle]="{'background-color': control.cp_color}">{{ control.cp }}</td>
+                <td class="text-center">{{ control.color }}</td>
+                <td class="text-center">{{ control.olor }}</td>
+                <td>{{ control.usuario }}</td>
+                <td>{{ control.observacion }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+</div>

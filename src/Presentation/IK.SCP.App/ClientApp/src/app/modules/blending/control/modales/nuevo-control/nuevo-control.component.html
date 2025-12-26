@@ -1,0 +1,74 @@
+<!-- <div class="card mb-4">
+    <div class="card-body"> -->
+
+<p-table [value]="componentes" styleClass="p-datatable-sm mb-5">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 100px">Artículo</th>
+      <th style="width: 60%">Descripción</th>
+      <th class="text-center"># cajas o bolos</th>
+      <th class="text-center">Kg x Caja o Bolo</th>
+      <th class="text-center">Lote</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-comp>
+    <tr>
+      <td>{{ comp.Articulo }}</td>
+      <td>{{ comp.Descripcion }}</td>
+      <th class="p-fluid">
+        <p-inputNumber
+          mode="decimal"
+          locale="en-US"
+          [maxFractionDigits]="2"
+          [(ngModel)]="comp.Cantidad"
+        >
+        </p-inputNumber>
+      </th>
+      <th class="p-fluid">
+        <p-inputNumber
+          mode="decimal"
+          locale="en-US"
+          [maxFractionDigits]="2"
+          [(ngModel)]="comp.Peso"
+        >
+        </p-inputNumber>
+      </th>
+      <th class="p-fluid">
+        <input type="text" pInputText [(ngModel)]="comp.Lote" />
+      </th>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- </div>
+</div> -->
+<!-- <div class="card mb-4"> -->
+  <!-- <div class="card-body"> -->
+    <span class="p-float-label">
+    <textarea
+      rows="2"
+      pInputTextarea
+      class="w-100 mb-4"
+      [(ngModel)]="observacion"
+    ></textarea>
+    <label>Observación</label>
+    </span>
+  <!-- </div>
+</div> -->
+
+<div class="ui-dialog-footer text-center pt-3">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa-solid fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Guardar"
+    icon="fa-solid fa-save"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+  ></button>
+</div>

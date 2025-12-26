@@ -1,0 +1,91 @@
+<div [formGroup]="form" class="ms-3 mt-3 mb-3">
+  <div class="row mb-3">
+    <label class="col-md-3 col-form-label"> N° Batch </label>
+    <div class="col-md-3 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="0"
+        [useGrouping]="false"
+        formControlName="numeroBatch"
+      ></p-inputNumber>
+    </div>
+    <label class="col-md-2 col-form-label"> CAL (Kg) </label>
+    <div class="col-md-3 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="2"
+        [useGrouping]="false"
+        formControlName="cal"
+      ></p-inputNumber>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-3 col-form-label"> Temperatura (°C) </label>
+    <label class="col-md-1 col-form-label text-start"> Inicio </label>
+    <div class="col-md-3 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="2"
+        [useGrouping]="false"
+        formControlName="temperaturaInicio"
+      ></p-inputNumber>
+    </div>
+    <label class="col-md-1 col-form-label text-end" *ngIf="esEdicion">
+      Fin
+    </label>
+    <div class="col-md-3 p-fluid" *ngIf="esEdicion">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="2"
+        [useGrouping]="false"
+        formControlName="temperaturaFin"
+      ></p-inputNumber>
+    </div>
+  </div>
+
+  <div class="row mb-3" *ngIf="esEdicion">
+    <label class="col-md-3 col-form-label"> Va a Tanque N° </label>
+    <div class="col-auto">
+      <p-selectButton
+        [options]="tanques"
+        optionLabel="nombre"
+        optionValue="id"
+        formControlName="numeroTanque"
+      ></p-selectButton>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-3 col-form-label"> Observación </label>
+    <div class="col-md-8 p-fluid">
+      <textarea
+        pInputTextarea
+        rows="2"
+        formControlName="observacion"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+<hr />
+<div class="ui-dialog-footer text-center pt-3">
+  <button
+    pButton
+    label="Cancelar"
+    icon="fa fa-times"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    [label]="esEdicion ? 'Guardar' : 'Agregar'"
+    [icon]="esEdicion ? 'fa fa-save' : 'fa fa-plus'"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+  ></button>
+</div>

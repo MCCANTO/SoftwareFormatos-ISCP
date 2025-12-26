@@ -1,0 +1,49 @@
+
+<div class="p-4">
+
+    <div class="p-fluid grid mb-2">
+        <div class="field col-5">
+            <span class="p-float-label">
+                <p-dropdown [options]="cargos" placeholder="Seleccione Cargo"
+                optionLabel="nombre" optionValue="nombre" [(ngModel)]="cargo"></p-dropdown>
+                <label for="dropdown">Cargo</label>
+            </span>
+        </div>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <input type="text" pInputText [(ngModel)]="nombre" />
+                <label for="dropdown">Nombre</label>
+            </span>
+        </div>
+        <div class="col-1">
+            <p-button icon="pi pi-check"
+                (onClick)="agregar()"
+            ></p-button>
+        </div>
+    </div>
+
+    <p-table [value]="personal">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Cargo</th>
+                <th>Persona</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-participante>
+            <tr>
+                <td>{{participante.cargoId}}</td>
+                <td>{{participante.nombre}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"
+    ></button>
+    <button pButton label="Agregar" icon="fa-solid fa-plus" class="p-button-rounded p-button-primary px-5"
+        (click)="guardar()"
+    ></button>
+</div>

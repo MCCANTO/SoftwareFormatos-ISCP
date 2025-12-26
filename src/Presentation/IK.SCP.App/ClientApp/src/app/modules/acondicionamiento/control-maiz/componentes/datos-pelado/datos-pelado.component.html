@@ -1,0 +1,75 @@
+<div class="row align-items-center mb-3">
+  <div class="col-md-4">
+    <b>INICIO DE PELADO</b>
+    <span class="ms-3">{{
+      datos?.resumen?.FechaHoraInicio | date : "dd/MM/yyyy HH:mm"
+    }}</span>
+  </div>
+  <div class="col-md-4">
+    <b>FIN DE PELADO</b>
+    <span class="ms-3">{{
+      datos?.resumen?.FechaHoraFin | date : "dd/MM/yyyy HH:mm"
+    }}</span>
+  </div>
+  <div class="col-md-4 text-end">
+    <button
+      pButton
+      label="Agregar"
+      icon="fa-solid fa-plus"
+      class="p-button-rounded p-button-primary px-4"
+      (click)="agregar()"
+    ></button>
+  </div>
+</div>
+
+<p-table
+  [value]="datos?.controles"
+  styleClass="p-datatable-sm app-table p-datatable-gridlines"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th rowspan="2"></th>
+      <th class="text-center" rowspan="2">N° Batch</th>
+      <th class="text-center" colspan="2">inicio</th>
+      <th class="text-center" colspan="2">fin</th>
+      <th class="text-center" rowspan="2">cal (kg)</th>
+      <th class="text-center" rowspan="2">va al tanque n°</th>
+      <th class="text-center" rowspan="2" style="width: 30%">observación</th>
+    </tr>
+    <tr>
+      <th class="text-center">fecha hora</th>
+      <th class="text-center">T (°C)</th>
+      <th class="text-center">fecha hora</th>
+      <th class="text-center">T (°C)</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-control>
+    <tr>
+      <td class="text-center" style="min-width: 40px">
+        <button
+          *ngIf="!control.cerrado"
+          pButton
+          pRipple
+          type="button"
+          icon="fa fa-edit fa-xl"
+          class="p-button-rounded p-button-success"
+          (click)="editar(control)"
+        ></button>
+      </td>
+      <td class="text-center">{{ control.numeroBatch }}</td>
+      <td class="text-center">
+        {{ control.fechaHoraInicio | date : "dd/MM/yyyy HH:mm" }}
+      </td>
+      <td class="text-center">{{ control.temperaturaInicio }}</td>
+      <td class="text-center">
+        {{ control.fechaHoraFin | date : "dd/MM/yyyy HH:mm" }}
+      </td>
+      <td class="text-center">{{ control.temperaturaFin }}</td>
+      <td class="text-center">{{ control.cal }}</td>
+      <td class="text-center">{{ control.numeroTanque }}</td>
+      <td>
+        <span [innerHTML]="control.observacion"></span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

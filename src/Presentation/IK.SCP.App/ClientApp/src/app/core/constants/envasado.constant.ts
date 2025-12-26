@@ -1,0 +1,14 @@
+export const ControlEnvasado = {
+  ARRANQUE_MAQUINA: 1202,
+  ARRANQUE: 1203,
+  BLENDING_ARRANQUE: 1214,
+  BLENDING_CONTROL: 1215,
+  REGISTRO_PEDACERIA: 1227,
+};
+
+export const ControlEnvasadoGranel = {
+  ARRANQUE: 1210,
+  CONTROL: 1211,
+  EVALUACION_PT: 1212,
+  CODIFICACION_CAJA: 1213,
+};

@@ -1,0 +1,59 @@
+
+<div class="p-4" *ngIf="condiciones">
+
+  <div class="p-fluid grid mb-2">
+      <div class="field col-4">
+          <!-- <span class="p-float-label">
+              <p-dropdown [options]="condiciones.tipos" placeholder="Seleccione Tipo" [(ngModel)]="condiciones.tipo"
+              [disabled]="!condiciones.editable" optionLabel="nombre" optionValue="id"></p-dropdown>
+              <label for="dropdown">Tipo</label>
+          </span> -->
+      </div>
+  </div>
+
+  <p-table [value]="condiciones.condiciones">
+      <ng-template pTemplate="header">
+          <tr>
+              <th></th>
+              <th class="fw-semibold text-center">NO / SÍ</th>
+              <th class="fw-semibold text-center">OBSERVACIÓN</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-condicion>
+          <tr>
+              <td>
+                  {{condicion.nombre}}
+                  <span *ngIf="condicion.comentario" (click)="op.toggle($event)">
+                      <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+                  </span>
+
+                  <p-overlayPanel #op>
+                      <ng-template pTemplate>
+                          <div style="max-width: 250px;" class="text-justify">
+                              <i>{{ condicion.comentario }}</i>
+                          </div>
+                      </ng-template>
+                  </p-overlayPanel>
+              </td>
+              <td class="text-center" style="width:80px;">
+                  <p-inputSwitch [(ngModel)]="condicion.valor" [disabled]="!condiciones.editable"></p-inputSwitch>
+              </td>
+              <td class="p-fluid" style="width:250px;">
+                  <textarea pInputTextarea [(ngModel)]="condicion.observacion" [disabled]="!condiciones.editable" [rows]="1"></textarea>
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+</div>
+
+
+
+<div class="ui-dialog-footer text-center pt-3">
+  <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+      (click)="cerrar()"
+  ></button>
+  <button *ngIf="condiciones.editable" pButton label="Agregar" icon="fa-solid fa-plus" class="p-button-rounded p-button-primary px-5"
+      (click)="guardar()"
+  ></button>
+</div>
+

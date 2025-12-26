@@ -1,0 +1,145 @@
+<!-- <div class="row justify-content-center align-items-center">
+  <div class="col-6">
+    <h4 class="title mb-0">Panel de Control</h4>
+  </div>
+  <div class="col-6 text-end">
+    <button
+      pButton
+      label="Regresar"
+      icon="fa-solid fa-chevron-left"
+      class="p-button-rounded p-button-danger px-4 me-2"
+      (click)="goTo(0)"
+    ></button>
+  </div>
+</div>
+<hr class="mb-4" /> -->
+
+<app-titulo-pagina
+  titulo="Panel de Control"
+  [mostrarBotonRegresar]="true"
+  (regresar)="goTo(1)"
+  (regresarAnt)="goTo(0)"
+></app-titulo-pagina>
+
+<div class="d-flex mb-3">
+
+  <app-card-button
+    icono="fa-solid fa-check-to-slot"
+    texto="Arranque de Manufactura"
+    (click)="goTo(1206)"
+  ></app-card-button>
+
+  <app-card-button
+    icono="fa-solid fa-check-to-slot"
+    texto="Evaluación de Atributos"
+    (click)="goTo(1205)"
+  ></app-card-button>
+
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-check-to-slot"
+      titulo="Arranques de Manufactura"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <p-table [value]="arranques_maquina" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th class="fw-semibold">Usuario</th>
+              <th class="fw-semibold text-center">Fecha</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-arranque>
+            <tr>
+              <td class="text-center">
+                <button pButton
+                        pRipple
+                        type="button"
+                        icon="fa-solid fa-magnifying-glass fa-xl"
+                        class="p-button-rounded p-button-success p-button-text"
+                        (click)="verArranqueMaquina(arranque)"></button>
+              </td>
+              <td>{{ arranque.usuario }}</td>
+              <td class="text-center">
+                {{ arranque.fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td class="text-center">
+                <button pButton
+                        pRipple
+                        type="button"
+                        icon="fa-solid fa-file-pdf fa-xl"
+                        class="p-button-rounded p-button-success p-button-text"
+                        (click)="createPDF(arranque)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-8">
+
+    <app-tarjeta-seccion
+      icono="fa-solid fa-table-list"
+      titulo="Evaluación de Atributos"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <ng-template #contentTemplate_2>
+        <p-table [value]="evaluaciones" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>Usuario</th>
+              <th class="text-center">Fecha Registro</th>
+              <th class="text-center">Panelistas</th>
+              <th class="text-center">Evaluación</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-evaluacion>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="openEvaluacion(evaluacion.evaluacionAtributoId)"
+                ></button>
+                <!-- </ng-template> -->
+              </td>
+              <td>{{ evaluacion.usuarioCreacion }}</td>
+              <td class="text-center">
+                {{ evaluacion.fechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td>{{ evaluacion.panelistas }}</td>
+              <td
+                class="text-center"
+                [ngStyle]="{
+                  'background-color': getColorStyle(evaluacion.calificacionFinal)
+                }"
+              >
+                {{ evaluacion.calificacionFinal }} - {{ evaluacion.resultado }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+
+  </div>
+</div>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  icon="pi pi-exclamation-triangle"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

@@ -1,0 +1,121 @@
+<app-titulo-pagina
+  titulo="Bandeja de Sazonado"
+  (regresarAnt)="regresar()"
+></app-titulo-pagina>
+
+<app-tarjeta-seccion
+  icono="fa fa-filter"
+  titulo="Filtros de búsqueda"
+  [contentTemplate]="contentTemplate_1"
+>
+
+  <ng-template #contentTemplate_1>
+    <div class="row">
+      <div class="col-2 p-fluid">
+        <span class="p-float-label">
+          <p-calendar [(ngModel)]="fecha"></p-calendar>
+          <!-- <input type="text" pInputText [(ngModel)]="fecha" /> -->
+          <label>Fecha</label>
+        </span>
+      </div>
+      <div class="col-3 p-fluid">
+        <span class="p-float-label">
+          <p-dropdown
+            placeholder="Línea"
+            [options]="lineasFR"
+            optionLabel="nombre"
+            optionValue="id"
+            [(ngModel)]="linea"
+          ></p-dropdown>
+          <label>Línea</label>
+        </span>
+      </div>
+      <div class="col-3 p-fluid">
+        <span class="p-float-label">
+          <input type="text" pInputText [(ngModel)]="producto" />
+          <label>Producto</label>
+        </span>
+      </div>
+      <div class="col-2 p-fluid">
+        <span class="p-float-label">
+          <input type="text" pInputText [(ngModel)]="sabor" />
+          <label>Sabor</label>
+        </span>
+      </div>
+      <div class="col">
+        <button
+          pButton
+          label="Buscar"
+          icon="fa-solid fa-search"
+          class="p-button-rounded p-button-success h-100 me-3 px-5"
+          (click)="cargarGrilla()"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</app-tarjeta-seccion>
+
+<app-tarjeta-seccion
+  icono="fa fa-table"
+  titulo="Resultado de la búsqueda"
+  [headerTemplate]="headerTemplate_2"
+  [contentTemplate]="contentTemplate_2"
+>
+<ng-template #headerTemplate_2>
+  <button
+    pButton
+    label="Agregar"
+    icon="fa-solid fa-plus"
+    class="p-button-rounded p-button-primary px-4"
+    (click)="agregar()"
+  ></button>
+</ng-template>
+  <ng-template #contentTemplate_2>
+    <p-table [value]="arranques" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th></th>
+          <th class="text-center">Fecha</th>
+          <th class="text-center">Orden</th>
+          <th>Sabor</th>
+          <th class="text-center" style="width: 50%;">Producto</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-arranque>
+        <tr>
+          <td>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="fa-solid fa-magnifying-glass fa-xl"
+              class="p-button-rounded p-button-success"
+              (click)="verArranque(arranque.arranqueId)"
+            ></button>
+          </td>
+          <td>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="fa-solid fa-print fa-xl"
+              class="p-button-rounded p-button-success"
+              (click)="printTemplateArranqueSazonado(arranque.arranqueId)"
+            ></button>
+          </td>
+          <td class="text-center">{{ arranque.fechaCreacion | date : "dd/MM/yyyy" }}</td>
+          <td class="text-center">{{ arranque.orden }}</td>
+          <td>{{ arranque.saborId }} - {{ arranque.saborDescripcion }}</td>
+          <td>
+            <ul class="mb-0" style="list-style-type:none;">
+              <li class="mb-0" *ngFor="let producto of arranque.productos">
+                <b>Línea: </b> {{ producto.linea }} | <b>Orden: </b> {{ producto.ordenFR}} | <b>Producto: </b> {{producto.producto}}
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-template>
+</app-tarjeta-seccion>

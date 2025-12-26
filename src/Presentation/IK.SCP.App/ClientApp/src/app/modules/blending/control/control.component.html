@@ -1,0 +1,164 @@
+
+<app-titulo-pagina
+  titulo="Control de Blending"
+  [mostrarBotonGuardar]="PERMISOS.ESCRITURA"
+  [mostrarBotonCerrar]="false"
+  (regresarAnt)="regresar()"
+  (guardar)="guardar()"
+  (cerrar)="cerrar()"
+>
+  <!-- TODO: Se agrego el Boton de Impresion -->
+  <div class="after-title">
+    <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+    <button pButton
+            pRipple
+            type="button"
+            icon="fa-solid fa-print fa-xl"
+            class="p-button-rounded p-button-success p-button-text"
+            (click)="printControlBlending()"></button>
+  </div>
+</app-titulo-pagina>
+
+<p-tabView>
+  <p-tabPanel header="Componentes del Mix">
+    <div class="row">
+      <div class="col-md-12">
+        <app-tarjeta-seccion
+          [contentTemplate]="contentTemplate_1"
+        >
+          <ng-template #contentTemplate_1>
+
+            <p-table [value]="componentes" styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 100px">Artículo</th>
+                    <th>Descripción</th>
+                    <th style="width: 100px">% Mezcla</th>
+                    <th class="text-center" style="width: 100px">Granel (NO/SÍ)</th>
+                    <th class="text-center" style="width: 100px">Línea (NO/SÍ)</th>
+                    <th style="width: 100px">Orden</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-comp>
+                  <tr>
+                    <td>{{comp.Articulo}}</td>
+                    <td>{{comp.Descripcion}}</td>
+                    <td>{{comp.Porcentaje}}</td>
+                    <td class="text-center">
+                      <p-inputSwitch
+                        [(ngModel)]="comp.Granel"
+                        [disabled]="!PERMISOS.ESCRITURA"
+                      ></p-inputSwitch>
+                    </td>
+                    <td class="text-center">
+                      <p-inputSwitch
+                        [(ngModel)]="comp.Linea"
+                        [disabled]="!PERMISOS.ESCRITURA"
+                      ></p-inputSwitch>
+                    </td>
+                    <td class="p-fluid">
+                      <input type="text" pInputText [(ngModel)]="comp.OrdenFritura" *ngIf="comp.Linea"
+                      [disabled]="!PERMISOS.ESCRITURA"
+                      />
+                    </td>
+                  </tr>
+              </ng-template>
+            </p-table>
+
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Control">
+    <div class="row">
+      <div class="col-md-12">
+        <app-tarjeta-seccion
+          [headerTemplate]="headerTemplate_2"
+          [contentTemplate]="contentTemplate_2"
+        >
+          <ng-template #headerTemplate_2>
+            <button
+              pButton
+              label="Agregar"
+              icon="fa-solid fa-plus"
+              class="p-button-rounded p-button-primary px-4"
+              (click)="agregar()"
+              *ngIf="PERMISOS.ESCRITURA"
+            ></button>
+          </ng-template>
+          <ng-template #contentTemplate_2>
+
+            <div class="card">
+              <p-table [columns]="cols" [value]="data" [scrollable]="true" styleClass="p-datatable-sm p-datatable-gridlines">
+                  <ng-template pTemplate="header" let-columns>
+                      <tr>
+                          <th class="control" [rowSpan]="2">Usuario</th>
+                          <th class="text-center control" [rowSpan]="2" alignFrozen="left" [frozen]="true" pFrozenColumn>Fecha</th>
+                          <th class="text-center" *ngFor="let col of columns" colspan="3">
+                              {{ col.header }}
+                          </th>
+                          <th class="text-center observacion" [rowSpan]="2" alignFrozen="right" pFrozenColumn>Observación</th>
+                      </tr>
+                      <tr>
+                        <ng-container *ngFor="let col of columns">
+                          <th class="text-center control">Cantidad de Cajas o Bolos</th>
+                          <th class="text-center control">Kg  x Caja o Bolo</th>
+                          <th class="text-center control">LOTE</th>
+                        </ng-container>
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-rowData let-columns="columns">
+                     <tr>
+                        <td>{{ rowData.Usuario }}</td>
+                        <td class="text-center" alignFrozen="left" pFrozenColumn>{{ rowData.Fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <ng-container *ngFor="let col of columns">
+                          <td class="text-center">{{ obtenerDatoArticulo(rowData[col.field], 0) }}</td>
+                          <td class="text-center">{{ obtenerDatoArticulo(rowData[col.field], 1) }}</td>
+                          <td class="text-center">{{ obtenerDatoArticulo(rowData[col.field], 2) }}</td>
+                        </ng-container>
+                        <td alignFrozen="right" pFrozenColumn>{{ rowData.Observacion }}</td>
+                     </tr>
+                  </ng-template>
+                  <ng-template pTemplate="footer" let-columns>
+                    <tr>
+                      <td colspan="2" class="text-end" pFrozenColumn>Total Usado (Kg)</td>
+                      <td class="text-center" *ngFor="let col of columns" colspan="3">
+                        {{ calcularPesoTotal(col.field) }}
+                      </td>
+                      <td></td>
+                    </tr>
+                  </ng-template>
+              </p-table>
+          </div>
+
+          </ng-template>
+        </app-tarjeta-seccion>
+      </div>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="Merma">
+
+    <p-table [value]="mermas" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 100px">Artículo</th>
+            <th>Descripción</th>
+            <th class="text-center" style="width: 100px">Merma (Kg)</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-merm>
+          <tr>
+            <td>{{merm.Articulo}}</td>
+            <td>{{merm.Descripcion}}</td>
+            <td class="p-fluid">
+              <input type="text" pInputText [(ngModel)]="merm.Merma"
+              [disabled]="!PERMISOS.ESCRITURA"
+              />
+            </td>
+          </tr>
+      </ng-template>
+    </p-table>
+
+  </p-tabPanel>
+</p-tabView>

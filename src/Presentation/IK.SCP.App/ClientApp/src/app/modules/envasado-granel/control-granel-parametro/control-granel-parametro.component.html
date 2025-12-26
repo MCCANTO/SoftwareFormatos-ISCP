@@ -1,0 +1,95 @@
+<app-titulo-pagina
+  titulo="Control de Parámetros"
+  (regresarAnt)="regresar()"
+></app-titulo-pagina>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Parámetros"
+      [headerTemplate]="headerTemplate_1"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #headerTemplate_1>
+        <button
+          pButton
+          label="Agregar"
+          icon="fa fa-plus"
+          class="p-button-rounded p-button-primary px-4"
+          *ngIf="PERMISOS.ESCRITURA"
+          (click)="agregar()"
+        ></button>
+      </ng-template>
+      <ng-template #contentTemplate_1>
+
+        <p-table [columns]="columnas" [value]="controles" styleClass="p-datatable-sm" [scrollable]="true">
+          <ng-template pTemplate="header" let-columns>
+              <tr>
+                  <th style="min-width: 250px;" pFrozenColumn></th>
+                  <th *ngFor="let col of columns" class="text-center fw-bold" style="min-width: 100px;">
+                      {{ col.header }}
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                  <td pFrozenColumn>{{ rowData.Parametro }}</td>
+                  <td *ngFor="let col of columns" class="text-center fw-semibold" style="font-size: .9rem;">
+                      {{ rowData[col.field] }}
+                  </td>
+              </tr>
+          </ng-template>
+      </p-table>
+
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Observaciones"
+      [contentTemplate]="contentTemplate_5"
+    >
+      <ng-template #contentTemplate_5>
+        <div class="p-fluid grid">
+          <div class="field col-10 mb-0" *ngIf="PERMISOS.ESCRITURA">
+            <textarea rows="1" pInputTextarea [(ngModel)]="observacion"></textarea>
+          </div>
+          <div class="field col-2 mb-0" *ngIf="PERMISOS.ESCRITURA">
+            <button
+              pButton
+              label="Agregar"
+              icon="fa fa-plus"
+              class="p-button-rounded p-button-primary px-4"
+              (click)="agregarObservacion()"
+            ></button>
+          </div>
+          <div class="field col-12">
+            <p-table [value]="observaciones" styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Usuario</th>
+                  <th class="text-center">Fecha Hora</th>
+                  <th style="width: 70%">Observación</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-observacion>
+                <tr>
+                  <td>{{ observacion.Usuario }}</td>
+                  <td class="text-center">
+                    {{ observacion.Fecha | date : "dd/MM/yyyy HH:mm" }}
+                  </td>
+                  <td>{{ observacion.Observacion }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>

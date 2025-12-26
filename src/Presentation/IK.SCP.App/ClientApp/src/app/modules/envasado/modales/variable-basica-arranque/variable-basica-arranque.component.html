@@ -1,0 +1,52 @@
+
+<div class="mb-4 p-dialog-content">
+
+    <div class="p-fluid grid mt-2">
+        <div class="field col-4">
+            <span class="p-float-label">
+                <p-dropdown [options]="tipos_variable" placeholder="Seleccione Tipo" [(ngModel)]="tipo_variable"
+                optionLabel="nombre" optionValue="parametroGeneralId" [disabled]="isEdit"></p-dropdown>
+                <label for="dropdown">Tipo</label>
+            </span>
+        </div>
+    </div>
+
+
+    <p-table [value]="variables" dataKey="Padre" sortField="Padre" sortMode="single" rowGroupMode="subheader" groupRowsBy="Padre">
+        
+        <ng-template pTemplate="groupheader" let-variable let-rowIndex="rowIndex" let-expanded="expanded">
+            <tr>
+                <td colspan="3" class="d-flex align-items-center" [pRowToggler]="variable" >
+                    <button type="button" pButton pRipple class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    <span class="font-bold ml-2">{{ variable.Padre }}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-variable>
+            <tr>
+                <td style="padding-left: 50px;">
+                    {{variable.Nombre}}
+                </td>
+                <td class="text-center" style="width: 40%;">
+                    <p-selectButton [options]="valores" [(ngModel)]="variable.Valor" optionLabel="texto" optionValue="id"
+                        [disabled]="variable.Cerrado"
+                    ></p-selectButton>
+                </td>
+                <td class="p-fluid" style="width: 26%;">
+                    <textarea pInputTextarea [(ngModel)]="variable.Observacion" [rows]="1" placeholder="Observación"
+                    ></textarea>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+</div>
+
+<div class="p-dialog-footer text-center pt-3">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"
+    ></button>
+    <button pButton label="Guardar" icon="fa-solid fa-save" class="p-button-rounded p-button-primary px-5" *ngIf="canSave"
+        (click)="agregar()"
+    ></button>
+</div>

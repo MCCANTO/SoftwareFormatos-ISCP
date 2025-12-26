@@ -1,0 +1,86 @@
+<div class="mb-4">
+  <div class="row align-items-center ps-2 mb-3" *ngIf="mostrarTipo">
+    <div class="col-auto">
+      <b>Tipo</b>
+    </div>
+    <div class="col-md-3 p-fluid">
+      <p-dropdown
+        [options]="tipos_variable"
+        placeholder="Seleccione Tipo"
+        [(ngModel)]="tipoId"
+        optionLabel="nombre"
+        optionValue="parametroGeneralId"
+        [disabled]="!editable"
+      ></p-dropdown>
+    </div>
+    <div class="col-auto" *ngIf="mostrarMaquinista">
+      <b>Maquinista</b>
+    </div>
+    <div class="col-md-3 p-fluid" *ngIf="mostrarMaquinista">
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="maquinista"
+        [disabled]="!editable"
+      />
+    </div>
+  </div>
+
+  <p-tabView>
+    <p-tabPanel
+      *ngFor="let item of variables"
+      [header]="item.padre"
+      headerStyleClass="tab-title"
+    >
+      <p-table [value]="item.items" dataKey="id" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>DESCRIPCIÓN</th>
+            <th class="text-center" style="width: 35%">CONDICIÓN</th>
+            <th class="text-center">OBSERVACIÓN</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-varbas>
+          <tr>
+            <td>{{ varbas.nombre }}</td>
+            <td class="text-center" style="width: 20%">
+              <p-selectButton
+                [options]="valores"
+                [(ngModel)]="varbas.valor"
+                optionLabel="texto"
+                optionValue="id"
+                [disabled]="varbas.cerrado || !editable"
+              ></p-selectButton>
+            </td>
+            <td class="p-fluid" style="width: 250px">
+              <textarea
+                pInputTextarea
+                [(ngModel)]="varbas.observacion"
+                [rows]="1"
+                [disabled]="varbas.cerrado || !editable"
+              ></textarea>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa-solid fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Agregar"
+    icon="fa-solid fa-plus"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+    *ngIf="cerrado === false && editable"
+  ></button>
+</div>

@@ -1,0 +1,73 @@
+<div class="row align-items-center mb-2">
+  <div class="col-md-4">
+    <b>INICIO DE SANCOCHADO</b>
+    <span class="ms-3">{{
+      datos?.resumen?.fechaInicio | date : "dd/MM/yyyy HH:mm"
+    }}</span>
+  </div>
+  <div class="col-md-4">
+    <b>FIN DE SANCOCHADO</b>
+    <span class="ms-3">{{
+      datos?.resumen?.fechaFin | date : "dd/MM/yyyy HH:mm"
+    }}</span>
+  </div>
+  <div class="col-md-4 text-end">
+    <button
+      pButton
+      label="Agregar"
+      icon="fa-solid fa-plus"
+      class="p-button-rounded p-button-primary px-4"
+      (click)="agregar()"
+    ></button>
+  </div>
+</div>
+
+<p-table
+  [value]="datos?.controles"
+  styleClass="p-datatable-sm app-table p-datatable-gridlines"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th rowspan="2" style="width: 40px"></th>
+      <th class="text-center" rowspan="2" style="width: 80px">
+        viene del tanque
+      </th>
+      <th class="text-center" rowspan="2" style="width: 80px">N° Batch</th>
+      <th class="text-center" colspan="2">inicio</th>
+      <th class="text-center" colspan="2">fin</th>
+      <th class="text-center" rowspan="2" style="width: 30%">observación</th>
+    </tr>
+    <tr>
+      <th class="text-center">fecha hora</th>
+      <th class="text-center">T (°C)</th>
+      <th class="text-center">fecha hora</th>
+      <th class="text-center">T (°C)</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr>
+      <td>
+        <button
+          *ngIf="!item.cerrado"
+          pButton
+          pRipple
+          type="button"
+          icon="fa fa-edit fa-xl"
+          class="p-button-rounded p-button-success"
+          (click)="editar(item)"
+        ></button>
+      </td>
+      <td class="text-center">{{ item.numeroTanque }}</td>
+      <td class="text-center">{{ item.numeroBatch }}</td>
+      <td class="text-center">
+        {{ item.fechaHoraInicio | date : "dd/MM/yyyy HH:mm" }}
+      </td>
+      <td class="text-center">{{ item.temperaturaInicio }}</td>
+      <td class="text-center">
+        {{ item.fechaHoraFin | date : "dd/MM/yyyy HH:mm" }}
+      </td>
+      <td class="text-center">{{ item.temperaturaFin }}</td>
+      <td>{{ item.observacion }}</td>
+    </tr>
+  </ng-template>
+</p-table>

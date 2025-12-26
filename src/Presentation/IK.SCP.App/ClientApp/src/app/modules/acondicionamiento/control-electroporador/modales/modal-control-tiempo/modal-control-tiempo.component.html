@@ -1,0 +1,63 @@
+<div class="container-fluid" [formGroup]="form">
+  <div class="row form-group mb-3">
+    <label class="col-form-label col-md-6">N° Paleta</label>
+    <div class="col-md-4 p-fluid">
+      <p-inputNumber [useGrouping]="false" formControlName="numeroPaleta">
+      </p-inputNumber>
+    </div>
+  </div>
+  <div class="row form-group mb-3">
+    <label class="col-form-label col-md-6">Cantidad (Kg)</label>
+    <div class="col-md-6 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="2"
+        formControlName="cantidadKg"
+      >
+      </p-inputNumber>
+    </div>
+  </div>
+  <div class="row form-group mb-3">
+    <label class="col-form-label col-md-6">Hora Inicio PEF</label>
+    <div class="col-md-6 p-fluid">
+      <p-inputMask mask="99:99" formControlName="horaInicioPef"></p-inputMask>
+    </div>
+  </div>
+  <div class="row form-group mb-3">
+    <label class="col-form-label col-md-6">Hora Inicio Fritura</label>
+    <div class="col-md-6 p-fluid">
+      <p-inputMask
+        mask="99:99"
+        formControlName="horaInicioFritura"
+      ></p-inputMask>
+    </div>
+  </div>
+  <div class="row form-group mb-3">
+    <label class="col-form-label col-md-12">Observación</label>
+    <div class="col-md-12 p-fluid">
+      <textarea
+        pInputTextarea
+        [rows]="3"
+        formControlName="observacion"
+      ></textarea>
+    </div>
+  </div>
+</div>
+<div class="p-dialog-footer text-center">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Guardar"
+    icon="fa fa-save"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+    [disabled]="!form.valid"
+  ></button>
+</div>

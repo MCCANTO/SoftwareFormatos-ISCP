@@ -1,0 +1,160 @@
+<div class="container-fluid">
+  <app-titulo-pagina
+    titulo="Checklist de Arranque del Electroporador (PEF)"
+    [mostrarBotonCerrar]="true"
+    (regresarAnt)="regresar()"
+    (cerrar)="cerrar()"
+  ></app-titulo-pagina>
+
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Condiciones Básicas"
+        [headerTemplate]="headerTemplate_1"
+        [contentTemplate]="contentTemplate_1"
+      >
+        <ng-template #headerTemplate_1>
+          <button
+            pButton
+            label="Guardar"
+            icon="fa fa-save"
+            class="p-button-rounded p-button-primary px-4"
+            (click)="guardarCondiciones()"
+            *ngIf="permiteGuardarCondiciones"
+          ></button>
+        </ng-template>
+        <ng-template #contentTemplate_1>
+          <app-listado-condicion
+            [condiciones]="arranque?.Condiciones"
+          ></app-listado-condicion>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Verificación de Equipo"
+        [headerTemplate]="headerTemplate_2"
+        [contentTemplate]="contentTemplate_2"
+      >
+        <ng-template #headerTemplate_2>
+          <button
+            pButton
+            label="Agregar"
+            icon="fa-solid fa-plus"
+            class="p-button-rounded p-button-primary px-4"
+            (click)="agregarVerificacion()"
+          ></button>
+        </ng-template>
+        <ng-template #contentTemplate_2>
+          <p-table
+            [value]="arranque?.Verificaciones"
+            styleClass="p-datatable-sm app-table"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th>Usuario</th>
+                <th class="text-center">Fecha y Hora</th>
+                <th class="text-center">Finalizado</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-verif>
+              <tr>
+                <td class="text-center">
+                  <button
+                    pButton
+                    pRipple
+                    type="button"
+                    icon="fa-solid fa-magnifying-glass fa-xl"
+                    class="p-button-rounded p-button-success p-button-text"
+                    (click)="verVerificacion(verif)"
+                  ></button>
+                </td>
+                <td>{{ verif.usuario }}</td>
+                <td class="text-center">
+                  {{ verif.fecha | date : "dd/MM/yyyy hh:mm" }}
+                </td>
+                <td class="text-center">
+                  <i
+                    *ngIf="verif.cerrado"
+                    class="fa-solid fa-check fa-xl text-success"
+                  ></i>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <app-tarjeta-seccion
+        icono="fa-solid fa-caret-right"
+        titulo="Variables básicas"
+        [headerTemplate]="headerTemplate_3"
+        [contentTemplate]="contentTemplate_3"
+      >
+        <ng-template #headerTemplate_3>
+          <button
+            pButton
+            label="Guardar"
+            icon="fa fa-save"
+            class="p-button-rounded p-button-primary px-4"
+            (click)="guardarVariablesBasicas()"
+          ></button>
+        </ng-template>
+        <ng-template #contentTemplate_3>
+          <p-table
+            [value]="arranque?.Variables"
+            styleClass="p-datatable-sm app-table"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Descripción</th>
+                <th>valor</th>
+                <th>Observación</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-variable>
+              <tr>
+                <td>{{ variable.nombre }}</td>
+                <td class="p-fluid" style="width: 120px">
+                  <p-inputNumber
+                    inputId="minmaxfraction"
+                    mode="decimal"
+                    locale="en-US"
+                    [maxFractionDigits]="2"
+                    [(ngModel)]="variable.valor"
+                    [disabled]="variable.cerrado"
+                  >
+                  </p-inputNumber>
+                </td>
+                <td class="p-fluid">
+                  <textarea
+                    pInputTextarea
+                    [(ngModel)]="variable.observacion"
+                    [rows]="1"
+                    [disabled]="variable.cerrado"
+                  ></textarea>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+  </div>
+</div>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

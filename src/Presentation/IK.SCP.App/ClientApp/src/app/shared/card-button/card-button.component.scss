@@ -1,0 +1,26 @@
+.card-button {
+  border: 0;
+  cursor: pointer;
+  // margin: .5rem;
+  margin-left: 0 !important;
+  margin-right: 1.5rem !important;
+  min-width: 130px;
+  max-width: 130px;
+  min-height: 130px;
+  max-height: 130px;
+}
+
+.card-button:hover {
+  background-color: #bebdbd63;
+}
+
+h6 {
+  font-weight: 600 !important;
+}
+
+// .card-button > .card-body {
+//   text-align: center;
+// }
+h6 {
+  font-weight: 400;
+}

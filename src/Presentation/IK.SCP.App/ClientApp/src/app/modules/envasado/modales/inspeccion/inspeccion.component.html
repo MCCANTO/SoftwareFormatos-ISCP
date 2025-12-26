@@ -1,0 +1,50 @@
+
+<div class="p-4">
+
+    <div class="p-fluid grid mb-2" [formGroup]="form">
+
+        <div class="field col-6">
+            <span class="p-float-label">
+                <p-inputNumber mode="decimal" [useGrouping]="false" formControlName="cantidadCaja">
+                </p-inputNumber>
+                <label for="dropdown">Cantidad de Cajas</label>
+            </span>
+        </div>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <input type="text" pInputText formControlName="etiquetador" />
+                <label for="dropdown">Persona que etiqueta</label>
+            </span>
+        </div>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <p-dropdown [options]="posiciones" formControlName="posicion" placeholder="Posición"
+                optionLabel="nombre" optionValue="id"></p-dropdown>
+                <label for="dropdown">Posición etiqueta</label>
+            </span>
+        </div>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <input type="text" pInputText formControlName="inspector" />
+                <label for="dropdown">Inspector</label>
+            </span>
+        </div>
+        <div class="col-12">
+            <p-fileUpload 
+                chooseLabel="Seleccionar archivo"
+                uploadLabel="Cargar"
+                cancelLabel="Cancelar"
+                name="myfile[]" 
+                [url]="urlCarga" (onUpload)="onUpload($event)"
+            ></p-fileUpload>
+        
+        </div>
+    </div>
+
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+    <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+        (click)="cerrar()"
+    ></button>
+</div>

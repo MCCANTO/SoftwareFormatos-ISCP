@@ -1,0 +1,133 @@
+<div class="container-fluid" [formGroup]="form">
+  <div class="row mb-3">
+    <label class="col-form-label col-md-5 fw-semibold">Materia Prima</label>
+    <div class="col-md-7 p-fluid">
+      <p-dropdown
+        placeholder="Seleccione"
+        [options]="materiasPrimas"
+        optionLabel="Nombre"
+        optionValue="Id"
+        appendTo="body"
+        formControlName="materiaPrima"
+      >
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="row mb-1">
+    <label class="col-form-label col-md-12 fw-semibold"
+      >¿Detecta y rechaza?</label
+    >
+    <label class="col-form-label col-md-5 ps-5">
+      0.80 mm 316SS<br />
+      P156268699A-276
+    </label>
+    <div class="col-auto p-fluid" style="padding-top: 8px">
+      <p-selectButton
+        [options]="valores"
+        optionLabel="icono"
+        optionValue="valor"
+        formControlName="deteccionUno"
+      >
+        <ng-template let-item class="text-center">
+          <div class="px-5 text-center">
+            <i [class]="item.icono"></i>
+          </div>
+        </ng-template>
+      </p-selectButton>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <label class="col-form-label col-md-5 ps-5">
+      1.0 mm 316SS<br />
+      P156277619E-36
+    </label>
+    <div class="col-auto p-fluid" style="padding-top: 8px">
+      <p-selectButton
+        [options]="valores"
+        optionLabel="icono"
+        optionValue="valor"
+        formControlName="deteccionDos"
+      >
+        <ng-template let-item class="text-center">
+          <div class="px-5 text-center">
+            <i [class]="item.icono"></i>
+          </div>
+        </ng-template>
+      </p-selectButton>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label class="col-form-label col-md-5 fw-semibold">Conformidad</label>
+    <div class="col-md-7 p-fluid">
+      <p-selectButton
+        [options]="valoresConformidad"
+        optionLabel="texto"
+        optionValue="valor"
+        formControlName="conformidad"
+      ></p-selectButton>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>ocurrencias</th>
+              <th>acciones a ejecutar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>No detección de patrón</td>
+              <td>
+                Parar el proceso y comunicar al técnico de mantenimiento para
+                reparación de máquina, asimismo comunicar a Facilitador de
+                Calidad y Coordinador de Producción.
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Detección de piedra</td>
+              <td>
+                Descarte de la materia prima con piedra que se encuentra bandeja
+                de rechazo.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-form-label col-md-12 fw-semibold">Observación</label>
+    <div class="col-md-12 p-fluid">
+      <textarea
+        pInputTextarea
+        [rows]="3"
+        formControlName="observacion"
+      ></textarea>
+    </div>
+  </div>
+</div>
+<div class="p-dialog-footer text-center">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Guardar"
+    icon="fa fa-save"
+    class="p-button-rounded p-button-primary px-5"
+    [disabled]="!form.valid"
+    (click)="guardar()"
+  ></button>
+</div>

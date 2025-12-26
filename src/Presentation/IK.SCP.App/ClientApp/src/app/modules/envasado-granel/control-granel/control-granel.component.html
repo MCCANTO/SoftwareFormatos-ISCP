@@ -1,0 +1,151 @@
+
+<app-titulo-pagina
+    titulo="Panel de Control"
+    (regresar)="regresar()"
+    [mostrarBotonRegresar]="true"
+    (regresarAnt)="regresarAnt()"
+></app-titulo-pagina>
+
+    <div class="d-flex mx-0 px-0 mb-5">
+        <app-card-button *ngFor="let aplicacion of aplicaciones"
+            [icono]="aplicacion.Icono"
+            [texto]="aplicacion.Nombre"
+            (click)="goTo(aplicacion.NodoId)"
+        ></app-card-button>
+    </div>
+
+<div class="row g-3" data-masonry='{"percentPosition": true }'>
+
+    <div class="col-md-5">
+
+        <app-tarjeta-seccion
+            icono="fa fa-boxes-packing"
+            titulo="Checklist de Arranque de Envasado"
+            [contentTemplate]="contentTemplate_1"
+        >
+            <ng-template #contentTemplate_1>
+                <p-table [value]="checklists" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th class="fw-semibold">Usuario</th>
+                            <th class="fw-semibold text-center">Fecha</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-arranque>
+                        <tr>
+                            <td class="text-center">
+                                <button pButton pRipple type="button"
+                                    icon="fa-solid fa-magnifying-glass fa-xl"
+                                    class="p-button-rounded p-button-success p-button-text"
+                                    (click)="verChecklist(arranque.arranqueGranelId)"
+                                ></button>
+                            </td>
+                            <td>{{arranque.usuario}}</td>
+                            <td class="text-center">{{arranque.fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
+                          <td class="text-center">
+                            <button pButton pRipple type="button"
+                                    icon="fa-solid fa-print fa-xl"
+                                    class="p-button-rounded p-button-success p-button-text"
+                                    (click)="printCheckListArranqueGranelEnvasado(arranque.arranqueGranelId)"
+                            ></button>
+                          </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-template>
+        </app-tarjeta-seccion>
+
+    </div>
+    <div class="col-md-7">
+
+        <app-tarjeta-seccion
+            icono="fa fa-square-check"
+            titulo="Evaluación de Producto Terminado"
+            [contentTemplate]="contentTemplate_2"
+        >
+            <ng-template #contentTemplate_2>
+                <p-table [value]="evaluaciones" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th>Usuario</th>
+                            <th class="text-center">Fecha</th>
+                            <th>Panelistas</th>
+                            <th class="text-center">Calificación Final</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-evaluacion>
+                        <tr>
+                            <td class="text-center">
+
+                                    <button pButton pRipple type="button"
+                                        icon="fa-solid fa-magnifying-glass fa-xl"
+                                        class="p-button-rounded p-button-success p-button-text"
+                                        (click)="verEvaluacion(evaluacion.EvaluacionPTGranelId)"
+                                    ></button>
+                            </td>
+                            <td>{{ evaluacion.UsuarioCreacion }}</td>
+                            <td class="text-center">
+                                {{ evaluacion.FechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+                            </td>
+                            <td>{{ evaluacion.Panelistas }}</td>
+                            <td
+                                class="text-center"
+                                [ngStyle]="{
+                                'background-color': getColorStyle(evaluacion.CalificacionFinal)
+                                }"
+                            >
+                                {{ evaluacion.CalificacionFinal }} - {{ evaluacion.Resultado }}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-template>
+        </app-tarjeta-seccion>
+
+    </div>
+    <div class="col-md-5">
+
+        <app-tarjeta-seccion
+            icono="fa fa-barcode"
+            titulo="Codificación de Caja"
+            [contentTemplate]="contentTemplate_3"
+        >
+            <ng-template #contentTemplate_3>
+                <p-table [value]="codificaciones" styleClass="p-datatable-sm">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th></th>
+                            <th class="fw-semibold">Usuario</th>
+                            <th class="fw-semibold text-center">Fecha</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-codif>
+                        <tr>
+                            <td class="text-center">
+                                <button pButton pRipple type="button"
+                                    icon="fa-solid fa-magnifying-glass fa-xl"
+                                    class="p-button-rounded p-button-success p-button-text"
+                                    (click)="verCodificacion(codif.imagen, codif.contentType)"
+                                ></button>
+                            </td>
+                            <td>{{codif.usuarioCreacion}}</td>
+                            <td class="text-center">{{codif.fechaCreacion | date: 'dd/MM/yyyy HH:mm'}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-template>
+        </app-tarjeta-seccion>
+
+    </div>
+</div>
+
+
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog header="Confirmación" icon="pi pi-exclamation-triangle" [style]="{width: '30vw'}"
+    acceptButtonStyleClass="p-button-warning"
+    rejectButtonStyleClass="p-button-outlined"
+    acceptLabel="Sí"
+></p-confirmDialog>

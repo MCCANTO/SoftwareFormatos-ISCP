@@ -1,0 +1,176 @@
+<app-titulo-pagina
+  titulo="Panel de Control"
+  [mostrarBotonCerrar]="false"
+  (regresarAnt)="regresar()"
+></app-titulo-pagina>
+
+<div class="d-flex mt-5">
+  <app-card-button
+    *ngFor="let item of listaControles"
+    [icono]="item.icono"
+    [texto]="item.nombre"
+    (click)="goTo(item.codigo)"
+  ></app-card-button>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-6" *ngIf="MostrarListadoArranqueMaiz">
+    <app-tarjeta-seccion
+      titulo="Checklists de Arranque de Maíz"
+      icono="fa fa-caret-right"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <p-table [value]="listaArranquesMaiz" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th class="fw-semibold">Usuario</th>
+              <th class="fw-semibold text-center">Fecha</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-arranque>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="verArranqueMaiz(arranque.Id)"
+                ></button>
+              </td>
+              <td>{{ arranque.Usuario }}</td>
+              <td class="text-center">
+                {{ arranque.Fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-print fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="printCheckListArranqueMaiz(arranque.Id)"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-6" *ngIf="MostrarListadoArranqueLavadoTuberculos">
+    <app-tarjeta-seccion
+      titulo="Checklists de Arranque de Lavado de Tubérculos"
+      icono="fa fa-caret-right"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <p-table
+          [value]="listaArranquesLavadoTuberculo"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th class="fw-semibold">Usuario</th>
+              <th class="fw-semibold text-center">Fecha</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-arranque>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="verArranqueLavadoTuberculo(arranque.Id)"
+                ></button>
+              </td>
+              <td>{{ arranque.Usuario }}</td>
+              <td class="text-center">
+                {{ arranque.Fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-print fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="printCheckListArranqueLavadoTuberculos(arranque.Id)"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-6" *ngIf="MostrarListadoArranqueElectroporador">
+    <app-tarjeta-seccion
+      titulo="Checklists de Arranque de Electroporador"
+      icono="fa fa-caret-right"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <p-table
+          [value]="listaArranquesElectroporador"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th class="fw-semibold">Usuario</th>
+              <th class="fw-semibold text-center">Fecha</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-arranque>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="verArranqueElectroporador(arranque.Id)"
+                ></button>
+              </td>
+              <td>{{ arranque.Usuario }}</td>
+              <td class="text-center">
+                {{ arranque.Fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-print fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="printCheckListArranqueElectroporador(arranque.Id)"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

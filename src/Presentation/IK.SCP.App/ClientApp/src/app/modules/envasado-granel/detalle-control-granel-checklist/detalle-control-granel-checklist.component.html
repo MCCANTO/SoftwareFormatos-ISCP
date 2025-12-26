@@ -1,0 +1,254 @@
+<app-titulo-pagina
+  titulo="Checklist de Arranque de Envasado"
+  (regresarAnt)="regresar()"
+></app-titulo-pagina>
+
+<div class="row mb-3">
+  <div class="col-md-4">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Datos principales"
+      [contentTemplate]="contentTemplate_6"
+    >
+      <ng-template #contentTemplate_6>
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-2">Tipo:</label>
+          <div class="col-md-10 p-fluid">
+            <p-selectButton
+              [options]="tiposGranel"
+              optionLabel="nombre"
+              optionValue="id"
+              [(ngModel)]="tipoGranel"
+              [disabled]="true"
+            ></p-selectButton>
+          </div>
+        </div>
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-4"> Fec. Vcto/Lote: </label>
+          <div class="col-md-5 p-fluid">
+            <p-calendar
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              appendTo="body"
+              [(ngModel)]="fechaVctoLote"
+              [disabled]="true"
+            ></p-calendar>
+          </div>
+        </div>
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-4"> Linea Fritura: </label>
+          <div class="col-md-7 p-fluid">
+            <p-dropdown
+              placeholder="Seleccione"
+              [options]="lineasFritura"
+              [(ngModel)]="lineaFritura"
+              optionLabel="Nombre"
+              optionValue="Id"
+              [disabled]="true"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-4"> Maquinista: </label>
+          <div class="col-md-8 p-fluid">
+            <input type="text" pInputText [(ngModel)]="maquinista" [disabled]="true" />
+          </div>
+        </div>
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-4"> Selladora: </label>
+          <div class="col-md-8 p-fluid">
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="selladora"
+              [disabled]="true"
+            />
+          </div>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-8">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Especificaciones"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <div class="table-responsive" *ngIf="especificaciones">
+          <table class="table">
+            <tbody>
+              <tr *ngFor="let esp of especificaciones">
+                <td class="fw-bold p-3">{{ esp.nombre }}</td>
+                <td class="d-flex">
+                  <p-selectButton
+                    [options]="esp.valores"
+                    optionLabel="nombre"
+                    optionValue="id"
+                    [(ngModel)]="esp.valor"
+                    [disabled]="true"
+                  ></p-selectButton>
+                  <input
+                    type="text"
+                    pInputText
+                    [(ngModel)]="esp.otro"
+                    *ngIf="esOtro(esp)"
+                    class="ms-3"
+                    [disabled]="true"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-7">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Condiciones Operativas"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <ng-template #contentTemplate_2>
+        <p-table [value]="condiciones" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>Tipo</th>
+              <th >Usuario</th>
+              <th class="text-center">Fecha Hora</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-condicion>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="listarCondicionesOperativas( condicion.id )"
+                ></button>
+              </td>
+              <td>{{ condicion.tipo }}</td>
+              <td>{{ condicion.usuario }}</td>
+              <td class="text-center">
+                {{ condicion.fecha | date : "dd/MM/yyyy hh:mm" }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-5">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Condiciones del Proceso"
+      [contentTemplate]="contentTemplate_3"
+    >
+      <ng-template #contentTemplate_3>
+        <p-table [value]="condicionesProceso" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th class="text-center">Fecha y Hora</th>
+              <th class="text-center">Finalizado</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-condProceso>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="listarCondicionesProcesoDetalle( condProceso.id, condProceso.cerrado )"
+                ></button>
+              </td>
+              <td class="text-center">
+                {{ condProceso.fecha | date : "dd/MM/yyyy hh:mm" }}
+              </td>
+              <td class="text-center">
+                <i
+                  *ngIf="condProceso.cerrado"
+                  class="fa fa-check fa-xl text-success"
+                ></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Personal"
+      [contentTemplate]="contentTemplate_7"
+    >
+      <ng-template #contentTemplate_7>
+
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-2">Personal que pesa:</label>
+          <div class="col-md-8 p-fluid">
+            <p-chips [(ngModel)]="personalPesa" [disabled]="true"></p-chips>
+          </div>
+        </div>
+        <div class="row form-group mb-3">
+          <label class="col-form-label col-md-2">Personal que sella:</label>
+          <div class="col-md-8 p-fluid">
+            <p-chips [(ngModel)]="personalSella" [disabled]="true"></p-chips>
+          </div>
+        </div>
+
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa fa-caret-right"
+      titulo="Observaciones"
+      [contentTemplate]="contentTemplate_5"
+    >
+      <ng-template #contentTemplate_5>
+        <div class="p-fluid grid">
+          <div class="field col-12">
+            <p-table [value]="observaciones" styleClass="p-datatable-sm">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Usuario</th>
+                  <th class="text-center">Fecha Hora</th>
+                  <th style="width: 70%">Observación</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-observacion>
+                <tr>
+                  <td>{{ observacion.usuario }}</td>
+                  <td class="text-center">
+                    {{ observacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+                  </td>
+                  <td>{{ observacion.observacion }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>

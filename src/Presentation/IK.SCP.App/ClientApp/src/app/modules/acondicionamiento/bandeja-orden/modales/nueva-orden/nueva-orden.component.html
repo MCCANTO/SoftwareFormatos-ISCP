@@ -1,0 +1,55 @@
+<div [formGroup]="form">
+  <div class="row mb-2">
+    <div class="col-md-3">Materia Prima</div>
+    <div class="col-md-9 p-fluid">
+      <p-dropdown
+        placeholder="Seleccione"
+        [options]="materiasPrimas"
+        optionLabel="Nombre"
+        optionValue="Id"
+        formControlName="materiaPrimaId"
+        (onChange)="generarCodigoOrden()"
+        appendTo="body"
+      >
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-md-3">Fecha Ejecución</div>
+    <div class="col-md-9 p-fluid">
+      <p-calendar appendTo="body" [showIcon]="true"
+        dateFormat="dd/mm/yy"
+        formControlName="fechaEjecucion"
+        (onSelect)="generarCodigoOrden()"
+      ></p-calendar>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">Orden</div>
+    <div class="col-md-9 p-fluid">
+      <input type="text" pInputText
+        formControlName="ordenId"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="ui-dialog-footer text-center">
+  <hr />
+  <button
+    pButton
+    label="Cancelar"
+    icon="fa fa-times"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cancelar()"
+  ></button>
+  <button
+    pButton
+    label="Guardar"
+    icon="fa fa-save"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+  ></button>
+</div>

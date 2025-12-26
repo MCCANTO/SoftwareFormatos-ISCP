@@ -1,0 +1,51 @@
+<div class="d-flex align-items-center justify-content-between px-2 mb-3">
+  <h4 class="mb-0 fw-bold">{{ titulo }}</h4>
+  <ng-content select=".after-title"></ng-content>
+  <div class="d-flex align-items-center">
+    <button
+      pButton
+      icon="fa fa-save"
+      class="p-button-rounded p-button-success px-4 me-3"
+      label="Guardar"
+      *ngIf="mostrarBotonGuardar"
+      (click)="onGuardar()"
+    ></button>
+
+    <button
+      pButton
+      icon="fa fa-save"
+      class="p-button-rounded p-button-success px-4 me-3"
+      label="Guardar y Cerrar"
+      *ngIf="mostrarBotonGuardarCerrar"
+      (click)="onGuardarCerrar()"
+    ></button>
+
+    <button
+      pButton
+      icon="fa fa-lock"
+      class="p-button-rounded p-button-success px-4 me-3"
+      label="Cerrar"
+      *ngIf="mostrarBotonCerrar"
+      (click)="onCerrar()"
+    ></button>
+
+    <!-- </div>
+      <div class="d-flex align-items-center"> -->
+    <button
+      pButton
+      icon="fa fa-arrow-left"
+      class="p-button-rounded p-button-warning px-4 ms-3"
+      label="Regresar"
+      *ngIf="mostrarBotonRegresarAnt"
+      (click)="onRegresarAnt()"
+    ></button>
+    <button
+      pButton
+      icon="fa fa-arrow-left"
+      class="p-button-rounded p-button-info px-4 ms-3"
+      label="Software Anterior"
+      *ngIf="mostrarBotonRegresar"
+      (click)="onRegresar()"
+    ></button>
+  </div>
+</div>

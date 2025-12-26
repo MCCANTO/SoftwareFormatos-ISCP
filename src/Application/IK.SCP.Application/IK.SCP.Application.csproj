@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Common\" />
+    <None Remove="SEG\" />
+    <None Remove="SEG\Rol\" />
+    <None Remove="SEG\Perfil\Queries\" />
+    <None Remove="MediatR.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="ENV\CondicionBasica\" />
+    <None Remove="ENV\VariableBasica\" />
+    <None Remove="ENV\CondicionBasica\Queries\" />
+    <None Remove="ENV\VariableBasica\Queries\" />
+    <None Remove="ENV\CondicionBasica\ViewModels\" />
+    <None Remove="ENV\VariableBasica\ViewModels\" />
+    <None Remove="ENV\ParametroGeneral\" />
+    <None Remove="ENV\ParametroGeneral\Queries\" />
+    <None Remove="ENV\ParametroGeneral\ViewModels\" />
+    <None Remove="FR\" />
+    <None Remove="FR\CondicionPrevia\" />
+    <None Remove="FR\CondicionPrevia\Queries\" />
+    <None Remove="FR\CondicionPrevia\ViewModels\" />
+    <None Remove="FR\VariableBasica\" />
+    <None Remove="FR\VerificacionEquipo\Queries\" />
+    <None Remove="FR\VerificacionEquipo\ViewModels\" />
+    <None Remove="FR\ArranqueMaquina\Commands\Save\" />
+    <None Remove="ACO\ArranqueLavadoTuberculo\" />
+    <None Remove="ACO\ArranqueLavadoTuberculo\Commands\" />
+    <None Remove="ACO\ArranqueLavadoTuberculo\Queries\" />
+    <None Remove="ACO\ControlRayosX\" />
+    <None Remove="ACO\ControlRayosX\Commands\" />
+    <None Remove="ACO\ControlRayosX\Queries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.101.0" />
+    <PackageReference Include="itext7" Version="8.0.0" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.0" />
+    <PackageReference Include="itext7.bouncy-castle-fips-adapter" Version="8.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ENV\ArranqueMaquina\ViewModels\Request\" />
+    <Folder Include="ENV\Blending\ViewModels\" />
+    <Folder Include="ENV\CondicionBasica\" />
+    <Folder Include="ENV\VariableBasica\" />
+    <Folder Include="ENV\CondicionBasica\Queries\" />
+    <Folder Include="ENV\VariableBasica\Queries\" />
+    <Folder Include="ENV\CondicionBasica\ViewModels\" />
+    <Folder Include="ENV\VariableBasica\ViewModels\" />
+    <Folder Include="ENV\ParametroGeneral\" />
+    <Folder Include="ENV\ParametroGeneral\Queries\" />
+    <Folder Include="ENV\ParametroGeneral\ViewModels\" />
+    <Folder Include="FR\CondicionPrevia\" />
+    <Folder Include="FR\CondicionPrevia\Queries\" />
+    <Folder Include="FR\CondicionPrevia\ViewModels\" />
+    <Folder Include="FR\VerificacionEquipo\Commands\" />
+    <Folder Include="FR\ArranqueMaquina\Commands\Save\" />
+    <Folder Include="SEG\Usuario\Commands\" />
+    <Folder Include="ACO\ArranqueLavadoTuberculo\" />
+    <Folder Include="ACO\ArranqueLavadoTuberculo\Commands\" />
+    <Folder Include="ACO\ArranqueLavadoTuberculo\Queries\" />
+    <Folder Include="ACO\ControlRayosX\" />
+    <Folder Include="ACO\ControlRayosX\Commands\" />
+    <Folder Include="ACO\ControlRayosX\Queries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\IK.SCP.Common\IK.SCP.Common.csproj" />
+    <ProjectReference Include="..\..\Common\IK.SCP.Externo\IK.SCP.Externo.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\IK.SCP.Infrastructure\IK.SCP.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

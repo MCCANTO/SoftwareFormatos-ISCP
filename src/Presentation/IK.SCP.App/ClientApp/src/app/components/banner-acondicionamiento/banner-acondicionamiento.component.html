@@ -1,0 +1,18 @@
+<div
+  *ngIf="dataAco"
+  class="px-3 py-1 d-flex justify-content-between text-white mt-2 bg-aco"
+>
+  <div>
+    <span class="fw-bold">ORDEN: </span><span>{{ dataAco.orden }}</span>
+  </div>
+
+  <div>
+    <span class="fw-bold">MATERIA PRIMA: </span
+    ><span>{{ dataAco.materiaPrima?.nombre }}</span>
+  </div>
+
+  <div>
+    <span class="fw-bold">FECHA: </span
+    ><span>{{ dataAco.fecha | date : "dd/MM/yyyy" }}</span>
+  </div>
+</div>

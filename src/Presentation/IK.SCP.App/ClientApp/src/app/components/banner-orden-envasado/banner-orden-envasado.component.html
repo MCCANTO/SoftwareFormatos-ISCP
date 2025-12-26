@@ -1,0 +1,17 @@
+<div class="px-3 py-1 d-flex justify-content-between text-white bg-env">
+  <div>
+    <span class="fw-bold">ORDEN: </span><span>{{ dataEnv.orden.Orden }}</span>
+  </div>
+
+  <div>
+    <span class="fw-bold">ARTÍCULO: </span
+    ><span>
+      {{ dataEnv.orden.Articulo }} - {{ dataEnv.orden.Descripcion }}</span
+    >
+  </div>
+
+  <div>
+    <span class="fw-bold">FECHA: </span
+    ><span> {{ dataEnv.orden.FechaEjecucion | date : "dd/MM/yyyy" }}</span>
+  </div>
+</div>

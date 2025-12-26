@@ -1,0 +1,180 @@
+<div class="container mx-0 px-0 mt-5">
+  <div class="row g-0">
+    <div class="col-md-4 me-4" *ngFor="let modulo of modulos">
+      <app-tarjeta-seccion [contentTemplate]="contentTemplate_1">
+        <ng-template #contentTemplate_1>
+          <div class="text-center pb-4 tarjeta">
+            <app-titulo-tarjeta-modulo
+              [titulo]="modulo.Nombre.toUpperCase()"
+              [icono]="modulo.Icono"
+              [clase]="estiloModulo(modulo.NodoId)"
+            ></app-titulo-tarjeta-modulo>
+
+            <ng-container *ngIf="modulo.NodoId === ACONDICIONAMIENTO">
+              <div class="row">
+                <div class="col-12 px-4 p-fluid">
+                  <button
+                    pButton
+                    label="Ingresar"
+                    class="p-button-success"
+                    (click)="goToAcondicionamiento()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="modulo.NodoId === FRITURA">
+              <div class="row">
+                <div class="col-12 px-4 p-fluid">
+                  <p-dropdown
+                    placeholder="Línea"
+                    [options]="freidoras"
+                    optionLabel="Nombre"
+                    optionValue="Id"
+                    [(ngModel)]="dataFritura.freidoraId"
+                  ></p-dropdown>
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Orden"
+                    [(ngModel)]="dataFritura.orden"
+                  />
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <button
+                    pButton
+                    label="Ingresar"
+                    class="p-button-success"
+                    (click)="goToFritura()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="modulo.NodoId === SAZONADO">
+              <div class="row">
+                <div class="col-12 px-4 p-fluid">
+                  <p-dropdown
+                    placeholder="Sazonador"
+                    [options]="sazonadores"
+                    optionLabel="nombre"
+                    optionValue="sazonadorId"
+                    [(ngModel)]="sazonador"
+                  ></p-dropdown>
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <button
+                    pButton
+                    label="Ingresar"
+                    class="p-button-success"
+                    (click)="goToSaborizado()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="modulo.NodoId === ENVASADO">
+              <div class="row">
+                <div class="col-12 px-4 p-fluid">
+                  <p-dropdown
+                    placeholder="Envasadora"
+                    [options]="envasadoras"
+                    optionLabel="Nombre"
+                    optionValue="Id"
+                    [(ngModel)]="dataEnvasado.envasadoraId"
+                  ></p-dropdown>
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Orden"
+                    [(ngModel)]="dataEnvasado.orden"
+                  />
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <button
+                    pButton
+                    label="Ingresar"
+                    class="p-button-success"
+                    (click)="goToEnvasado()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="modulo.NodoId === ENVASADO_GRANEL">
+              <div class="row">
+                <div class="col-12 px-4 p-fluid">
+                  <p-dropdown
+                    placeholder="Envasadora"
+                    [options]="envasadoras_granel"
+                    optionLabel="Nombre"
+                    optionValue="Id"
+                    [(ngModel)]="dataEnvasadoGranel.envasadoraId"
+                    [disabled]="true"
+                  ></p-dropdown>
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <input
+                    type="text"
+                    pInputText
+                    placeholder="Orden"
+                    [(ngModel)]="dataEnvasadoGranel.orden"
+                  />
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <button
+                    pButton
+                    label="Ingresar"
+                    class="p-button-success"
+                    (click)="goToEnvasadoGranel()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="modulo.NodoId === CONTROL_ACEITE">
+              <div class="row">
+                <div class="col-12 text-center fw-bold text-uppercase">
+                  <i>(Sin orden de fritura)</i>
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <p-dropdown
+                    placeholder="Línea"
+                    [options]="freidoras"
+                    optionLabel="Nombre"
+                    optionValue="Id"
+                    [(ngModel)]="dataControlAceite.freidoraId"
+                  ></p-dropdown>
+                </div>
+                <div class="col-12 px-4 p-fluid">
+                  <button
+                    pButton
+                    label="Ingresar"
+                    class="p-button-success"
+                    (click)="goToControlAceite()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-template>
+      </app-tarjeta-seccion>
+    </div>
+    <!-- <div
+      class="col-md-4"
+      *ngIf="
+        PERMISOS_CTRL_ACEITE.ESCRITURA ||
+        PERMISOS_CTRL_ACEITE.LECTURA ||
+        PERMISOS_CTRL_ACEITE.REVISION
+      "
+    >
+
+    </div> -->
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>

@@ -1,0 +1,205 @@
+<app-titulo-pagina
+  titulo="Checklist de Arranque de Manufactura"
+  (regresarAnt)="regresar()"
+  [mostrarBotonCerrar]="PERMISOS.ESCRITURA"
+  (cerrar)="guardar()"
+></app-titulo-pagina>
+
+<div class="row" *ngIf="dataArranqueMaquina">
+  <div class="col-md-7">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Condiciones Previas"
+      [headerTemplate]="headerTemplate_1"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #headerTemplate_1>
+        <button
+          pButton
+          label="Guardar"
+          icon="fa-solid fa-save"
+          class="p-button-rounded p-button-primary px-4"
+          (click)="guardarCondiciones()"
+          *ngIf="PERMISOS.ESCRITURA && !dataArranqueMaquina?.cerrado"
+        ></button>
+      </ng-template>
+      <ng-template #contentTemplate_1>
+        <p-table
+          [value]="dataArranqueMaquina.condiciones"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Descripción</th>
+              <th
+                class="fw-semibold text-center"
+                style="width: 60px !important"
+              >
+                No / Sí
+              </th>
+              <th>Observación</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-condicion>
+            <tr>
+              <td>
+                {{ condicion.orden }}.- {{ condicion.nombre }}
+                <span *ngIf="condicion.comentario" (click)="op.toggle($event)">
+                  <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+                </span>
+
+                <p-overlayPanel #op>
+                  <ng-template pTemplate>
+                    <div style="max-width: 250px" class="text-justify">
+                      <i>{{ condicion.comentario }}</i>
+                    </div>
+                  </ng-template>
+                </p-overlayPanel>
+              </td>
+              <td class="text-center" style="width: 80px">
+                <p-inputSwitch [(ngModel)]="condicion.valor"
+                  [disabled]="!PERMISOS.ESCRITURA"
+                ></p-inputSwitch>
+              </td>
+              <td style="width: 40%" class="p-fluid">
+                <textarea
+                  pInputTextarea
+                  [(ngModel)]="condicion.observacion"
+                  [rows]="1"
+                  [disabled]="!PERMISOS.ESCRITURA"
+                ></textarea>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+
+  <div class="col-md-5">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Verificación de Equipo"
+      [headerTemplate]="headerTemplate_2"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <ng-template #headerTemplate_2>
+        <button
+          pButton
+          label="Agregar"
+          icon="fa-solid fa-plus"
+          class="p-button-rounded p-button-primary px-4"
+          (click)="openModalVerificacionEquipo()"
+          *ngIf="PERMISOS.ESCRITURA && !dataArranqueMaquina?.cerrado"
+        ></button>
+      </ng-template>
+      <ng-template #contentTemplate_2>
+        <p-table
+          [value]="dataArranqueMaquina.verificaciones"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>Usuario</th>
+              <th>Fecha Hora</th>
+              <th>Finalizado</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-verificacion>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="verVerificacion(verificacion)"
+                  *ngIf="PERMISOS.ESCRITURA"
+                ></button>
+              </td>
+              <td>{{ verificacion.usuario }}</td>
+              <td class="text-center">
+                {{ verificacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td class="text-center">
+                <i
+                  *ngIf="verificacion.cerrado"
+                  class="fa-solid fa-check fa-xl text-success"
+                ></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+<div class="row" *ngIf="dataArranqueMaquina">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Observaciones"
+      [contentTemplate]="contentTemplate_3"
+    >
+      <ng-template #contentTemplate_3>
+        <div class="p-fluid grid">
+          <div
+            class="field col-10"
+            *ngIf="PERMISOS.ESCRITURA && !dataArranqueMaquina.cerrado"
+          >
+            <textarea
+              rows="1"
+              pInputTextarea
+              [(ngModel)]="observacion"
+            ></textarea>
+          </div>
+          <div
+            class="field col-2"
+            *ngIf="PERMISOS.ESCRITURA && !dataArranqueMaquina.cerrado"
+          >
+            <button
+              pButton
+              label="Agregar"
+              icon="fa-solid fa-plus"
+              class="p-button-rounded p-button-primary px-4"
+              (click)="agregarObservacion()"
+            ></button>
+          </div>
+          <div class="field col-12">
+            <p-table
+              [value]="dataArranqueMaquina.observaciones"
+              styleClass="p-datatable-sm"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Usuario</th>
+                  <th>Fecha Hora</th>
+                  <th>Observación</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-observacion>
+                <tr>
+                  <td>{{ observacion.usuario }}</td>
+                  <td class="text-center">
+                    {{ observacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+                  </td>
+                  <td style="width: 70%">{{ observacion.observacion }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

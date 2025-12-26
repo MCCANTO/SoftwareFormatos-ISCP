@@ -1,0 +1,82 @@
+<div class="container" [formGroup]="form">
+  <div class="row mb-3">
+    <label class="col-md-6 col-form-label">N° Batch</label>
+    <div class="col-md-3 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="0"
+        formControlName="numeroBatch"
+      ></p-inputNumber>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-6 col-form-label">Cantidad Batch (Kg)</label>
+    <div class="col-md-4 p-fluid">
+      <p-inputNumber
+        mode="decimal"
+        locale="en-US"
+        [maxFractionDigits]="0"
+        formControlName="cantidadBatch"
+      ></p-inputNumber>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-6 col-form-label">REMOJO - Fecha Inicio </label>
+    <div class="col-md-6 p-fluid">
+      <p-calendar
+        [showTime]="true"
+        [showIcon]="true"
+        appendTo="body"
+        formControlName="fechaHoraInicioReposo"
+        dateFormat="dd/mm/yy"
+        dataType="string"
+      ></p-calendar>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-6 col-form-label">FRITURA - Fecha Inicio </label>
+    <div class="col-md-6 p-fluid">
+      <p-calendar
+        [showTime]="true"
+        [showIcon]="true"
+        formControlName="fechaHoraInicioFritura"
+        appendTo="body"
+        dateFormat="dd/mm/yy"
+        dataType="string"
+      ></p-calendar>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-md-12 col-form-label">Observación</label>
+    <div class="col-md-12 p-fluid">
+      <textarea
+        pInputTextarea
+        rows="3"
+        formControlName="observacion"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+<hr />
+<div class="ui-dialog-footer text-center pt-3">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa-solid fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Agregar"
+    icon="fa-solid fa-plus"
+    class="p-button-rounded p-button-primary px-5"
+    (click)="guardar()"
+  ></button>
+</div>

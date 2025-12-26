@@ -1,0 +1,121 @@
+<div style="margin-bottom: 150px;">
+  <div class="row justify-content-center align-items-center mb-3">
+    <div class="col-auto">Línea</div>
+    <div class="col-3 p-fluid">
+      <p-dropdown
+        placeholder="--- Seleccione ---"
+        [(ngModel)]="linea"
+        [options]="lineas"
+        optionLabel="nombre"
+        optionValue="id"
+      ></p-dropdown>
+    </div>
+    <div class="col-2">
+      <button
+        pButton
+        label="Agregar"
+        icon="fa-solid fa-plus"
+        class="p-button-rounded p-button-primary me-3 px-5"
+        (click)="agregarOrden()"
+      ></button>
+    </div>
+  </div>
+
+  <div [formGroup]="form" *ngIf="ordenes.controls.length > 0">
+    <app-tarjeta-seccion
+      titulo="Órdenes de Fritura"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <ng-container formArrayName="ordenes">
+          <ng-container
+            *ngFor="let ordenForm of ordenes.controls; let i = index"
+          >
+            <div [formGroup]="ordenForm" class="mb-5">
+              <div class="row g-3">
+                <label class="col-md-1 col-form-label"> Línea </label>
+                <div class="col-md-3">
+                  <p-dropdown
+                    placeholder="Línea"
+                    formControlName="linea"
+                    [options]="lineas"
+                    optionLabel="nombre"
+                    optionValue="id"
+                  ></p-dropdown>
+                </div>
+                <label class="col-md-1 col-form-label"> Órden </label>
+                <div class="col-md-2">
+                  <p-autoComplete
+                    formControlName="orden"
+                    [suggestions]="productos"
+                    field="orden"
+                    (completeMethod)="
+                      buscarOrden($event, ordenForm.get('linea')?.value)
+                    "
+                    (onSelect)="mostrarProducto($event, ordenForm)"
+                  >
+                  </p-autoComplete>
+                </div>
+                <div class="col-md-5 text-end">
+                  <button
+                    pButton
+                    label=""
+                    icon="fa fa-trash"
+                    class="p-button-danger px-5"
+                    (click)="eliminarOrden(i)"
+                  ></button>
+                </div>
+                <label class="col-md-auto col-form-label"> Producto </label>
+                <div class="col-md p-fluid">
+                  <input type="text" pInputText formControlName="producto" />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </app-tarjeta-seccion>
+
+    <app-tarjeta-seccion
+      *ngIf="ordenes.length > 0 && sabores"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <ng-template #contentTemplate_2>
+        <div class="row g-3">
+          <div class="col-md-1 col-form-label">Sabor</div>
+          <div class="col-md-7 p-fluid">
+            <p-dropdown
+              placeholder="Sabor"
+              formControlName="sabor"
+              [options]="sabores"
+              optionLabel="nombre"
+              optionValue="articulo"
+            ></p-dropdown>
+          </div>
+          <div class="col-md-1 col-form-label text-end" *ngIf="esOtro">Otro</div>
+          <div class="col-md-3 p-fluid" *ngIf="esOtro">
+            <input type="text" pInputText formControlName="otro" />
+          </div>
+        </div>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+
+<div class="text-center">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa-solid fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Guardar"
+    icon="fa-solid fa-save"
+    class="p-button-rounded p-button-primary px-5"
+    *ngIf="form.valid"
+    (click)="guardar()"
+  ></button>
+</div>

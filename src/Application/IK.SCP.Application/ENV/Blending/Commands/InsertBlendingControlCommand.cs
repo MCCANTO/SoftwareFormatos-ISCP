@@ -1,0 +1,38 @@
+﻿using IK.SCP.Application.Common.Constants;
+using IK.SCP.Application.Common.Response;
+using IK.SCP.Domain.Dtos;
+using IK.SCP.Infrastructure;
+using MediatR;
+
+namespace IK.SCP.Application.ENV.Commands
+{
+    public class InsertBlendingControlCommand : IRequest<StatusResponse>
+    {
+        public string Orden { get; set; }
+        public string Observacion { get; set; }
+        public List<ControlComponenteBlendingDto> Componentes { get; set; }
+    }
+
+    public class InsertBlendingControlCommandHandler : IRequestHandler<InsertBlendingControlCommand, StatusResponse>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public InsertBlendingControlCommandHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<StatusResponse> Handle(InsertBlendingControlCommand request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _uow.InsertarControlBlending(request.Orden, request.Observacion, request.Componentes);
+                return StatusResponse.TrueFalse(result, CommandConst.MSJ_UPDATE_OK, CommandConst.MSJ_UPDATE_ERROR);
+            }
+            catch (Exception ex)
+            {
+                return StatusResponse.False(ex.Message, statusCode: 500);
+            }
+        }
+    }
+}

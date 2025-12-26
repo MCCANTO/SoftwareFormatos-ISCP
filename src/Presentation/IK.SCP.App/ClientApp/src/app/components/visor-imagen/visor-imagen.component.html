@@ -1,0 +1,21 @@
+
+<!-- <p-image [src]="imagen" alt="Image"></p-image> -->
+<div class="text-center p-5">
+    <img
+        [src]="imagen | base64: contentType"
+        *ngIf="imagen"
+        alt="imagen"
+        style="width: 100%;"
+    />
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+    <button
+      pButton
+      label="Cerrar"
+      icon="fa-solid fa-xmark"
+      class="p-button-rounded p-button-danger me-3 px-5"
+      (click)="cerrar()"
+    ></button>
+</div>
+  

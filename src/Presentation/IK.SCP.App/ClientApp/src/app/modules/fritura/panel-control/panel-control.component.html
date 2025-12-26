@@ -1,0 +1,203 @@
+<app-titulo-pagina
+  titulo="Panel de Control"
+  [mostrarBotonRegresar]="true"
+  (regresar)="goTo(1)"
+  (regresarAnt)="goTo(0)"
+></app-titulo-pagina>
+
+<div class="d-flex mx-0 px-0 mb-5">
+  <ng-container *ngFor="let aplicacion of aplicaciones">
+    <app-card-button
+      [icono]="aplicacion.Icono"
+      [texto]="aplicacion.Nombre"
+      (click)="goTo(aplicacion.NodoId)"
+      *ngIf="validarVisibilidad(aplicacion.NodoId)"
+    ></app-card-button>
+  </ng-container>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-check-to-slot"
+      titulo="Arranques de Manufactura"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <p-table
+          [value]="arranques_maquina"
+          styleClass="p-datatable-sm app-table"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>Usuario</th>
+              <th class="text-center">Fecha</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-arranque>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="verArranqueMaquina(arranque)"
+                ></button>
+              </td>
+              <td>{{ arranque.usuario }}</td>
+              <td class="text-center">
+                {{ arranque.fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <button pButton
+                      pRipple
+                      type="button"
+                      icon="fa-solid fa-print fa-xl"
+                      class="p-button-rounded p-button-success p-button-text"
+                      (click)="createPDFArranqueManufactura(arranque)"></button>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-8">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-table-list"
+      titulo="Evaluación de Atributos"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <!-- TODO: Width: 70% quitar buscar manera mas optima -->
+      <div class="after-title" style="width: 70%">
+        <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+        <button pButton
+                pRipple
+                type="button"
+                icon="fa-solid fa-print fa-xl"
+                class="p-button-rounded p-button-success p-button-text"
+                (click)="createPDFEvaluacionAtributos(1)"></button>
+      </div>
+      <ng-template #contentTemplate_2>
+        <p-table [value]="evaluaciones" styleClass="p-datatable-sm app-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>Usuario</th>
+              <th class="text-center">Fecha Registro</th>
+              <th class="text-center">Panelistas</th>
+              <th class="text-center">Evaluación</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-evaluacion>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="openEvaluacion(evaluacion.evaluacionAtributoId)"
+                ></button>
+                <!-- </ng-template> -->
+              </td>
+              <td>{{ evaluacion.usuarioCreacion }}</td>
+              <td class="text-center">
+                {{ evaluacion.fechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td>{{ evaluacion.panelistas }}</td>
+              <td
+                class="text-center"
+                [ngStyle]="{
+                  'background-color': getColorStyle(
+                    evaluacion.calificacionFinal
+                  )
+                }"
+              >
+                {{ evaluacion.calificacionFinal }} - {{ evaluacion.resultado }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa fa-check-to-slot"
+      titulo="Caracterización del producto terminado"
+      [contentTemplate]="contentTemplate_3"
+    >
+      <!-- TODO: Se agrego el Boton de Impresion -->
+      <div class="after-title">
+        <!-- Aquí puedes agregar tu botón o cualquier otro contenido -->
+        <button pButton
+                pRipple
+                type="button"
+                icon="fa-solid fa-print fa-xl"
+                class="p-button-rounded p-button-success p-button-text"
+                (click)="printCaracterizacionProductoTerminado()"></button>
+
+        <button pButton
+                pRipple
+                type="button"
+                icon="fa fa-file-csv fa-xl"
+                class="p-button-rounded p-button-success p-button-text"
+                (click)="exportExcel()"></button>
+      </div>
+      <ng-template #contentTemplate_3>
+        <p-table
+          [value]="caracterizaciones"
+          styleClass="p-datatable-sm app-table"
+          [tableStyle]="{ 'min-width': '140rem' }"
+          id="caracterizaciones"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" style="min-width: 120px;">Fecha Hora</th>
+              <th class="text-center" style="min-width: 70px;">Peso (G)</th>
+              <ng-container *ngFor="let item of defectos">
+                <th class="text-center" style="min-width: 100px;">{{ item.nombre }}</th>
+                <th class="text-center" style="min-width: 80px;">{{ item.porcentaje }}</th>
+              </ng-container>
+              <th style="min-width: 200px;">Etapa de proceso</th>
+              <th>Usuario</th>
+              <th style="min-width: 100px;">Inspector</th>
+              <th>Observación</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-registro>
+            <tr>
+              <td class="text-center">{{ registro.fechaHora | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="text-center">{{ registro.peso }}</td>
+              <ng-container *ngFor="let defecto of defectos">
+                <td class="text-center">
+                  {{ obtenerDatoDefecto(registro, defecto, "valor") | number : '1.2-2' }}
+                </td>
+                <td class="text-center">
+                  {{ obtenerDatoDefecto(registro, defecto, "porcentaje") | number : '1.2-2' }}
+                </td>
+              </ng-container>
+              <td>{{ registro.etapa }}</td>
+              <td>{{ registro.usuario }}</td>
+              <td>{{ registro.inspector }}</td>
+              <td style="min-width: 300px;">{{ registro.observacion }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog
+  header="Confirmación"
+  icon="pi pi-exclamation-triangle"
+  [style]="{ width: '30vw' }"
+  acceptButtonStyleClass="p-button-warning"
+  rejectButtonStyleClass="p-button-outlined"
+  acceptLabel="Sí"
+></p-confirmDialog>

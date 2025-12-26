@@ -1,0 +1,17 @@
+<div class="px-3 py-1 d-flex justify-content-between bg-fr">
+  <div>
+    <span class="fw-bold">ORDEN: </span><span>{{ dataFr.orden?.Orden }}</span>
+  </div>
+
+  <div>
+    <span class="fw-bold">ARTÍCULO: </span
+    ><span>
+      {{ dataFr.orden?.Articulo }} - {{ dataFr.orden?.Descripcion }}</span
+    >
+  </div>
+
+  <div>
+    <span class="fw-bold">FECHA: </span
+    ><span> {{ dataFr.orden?.FechaEjecucion | date : "dd/MM/yyyy" }}</span>
+  </div>
+</div>

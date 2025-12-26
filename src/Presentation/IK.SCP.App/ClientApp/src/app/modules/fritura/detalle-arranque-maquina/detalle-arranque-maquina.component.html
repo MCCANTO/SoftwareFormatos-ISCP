@@ -1,0 +1,138 @@
+<app-titulo-pagina
+  titulo="Checklist de Arranque de Manufactura"
+  (regresarAnt)="regresar()"
+></app-titulo-pagina>
+
+<div class="row mb-4" *ngIf="dataArranqueMaquina">
+  <div class="col-md-6">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Condiciones Previas"
+      [contentTemplate]="contentTemplate_1"
+    >
+      <ng-template #contentTemplate_1>
+        <p-table
+          [value]="dataArranqueMaquina.condiciones"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Descripción</th>
+              <th
+                class="fw-semibold text-center"
+                style="width: 60px !important"
+              >
+                No / Sí
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-condicion>
+            <tr>
+              <td>
+                {{ condicion.orden }}.- {{ condicion.nombre }}
+                <span *ngIf="condicion.comentario" (click)="op.toggle($event)">
+                  <i class="fa-solid fa-circle-question fa-xl pointer"></i>
+                </span>
+
+                <p-overlayPanel #op>
+                  <ng-template pTemplate>
+                    <div style="max-width: 250px" class="text-justify">
+                      <i>{{ condicion.comentario }}</i>
+                    </div>
+                  </ng-template>
+                </p-overlayPanel>
+              </td>
+              <td class="text-center" style="width: 80px">
+                <p-inputSwitch
+                  [(ngModel)]="condicion.valor"
+                  [disabled]="true"
+                ></p-inputSwitch>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+
+  <div class="col-md-6">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Verificación de Equipo"
+      [contentTemplate]="contentTemplate_2"
+    >
+      <ng-template #contentTemplate_2>
+        <p-table
+          [value]="dataArranqueMaquina.verificaciones"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th>Usuario</th>
+              <th>Fecha Hora</th>
+              <th>Finalizado</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-verificacion>
+            <tr>
+              <td class="text-center">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="fa-solid fa-magnifying-glass fa-xl"
+                  class="p-button-rounded p-button-success p-button-text"
+                  (click)="verVerificacion(verificacion)"
+                ></button>
+              </td>
+              <td>{{ verificacion.usuario }}</td>
+              <td class="text-center">
+                {{ verificacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td class="text-center">
+                <i
+                  *ngIf="verificacion.cerrado"
+                  class="fa-solid fa-check fa-xl text-success"
+                ></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>
+<div class="row" *ngIf="dataArranqueMaquina">
+  <div class="col-md-12">
+    <app-tarjeta-seccion
+      icono="fa-solid fa-caret-right"
+      titulo="Observaciones"
+      [contentTemplate]="contentTemplate_3"
+    >
+      <ng-template #contentTemplate_3>
+        <p-table
+          [value]="dataArranqueMaquina.observaciones"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Usuario</th>
+              <th>Fecha Hora</th>
+              <th>Observación</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-observacion>
+            <tr>
+              <td>{{ observacion.usuario }}</td>
+              <td class="text-center">
+                {{ observacion.fecha | date : "dd/MM/yyyy HH:mm" }}
+              </td>
+              <td style="width: 70%">{{ observacion.observacion }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-template>
+    </app-tarjeta-seccion>
+  </div>
+</div>

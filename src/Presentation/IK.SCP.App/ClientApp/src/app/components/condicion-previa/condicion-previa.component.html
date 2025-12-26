@@ -1,0 +1,50 @@
+<p-table [value]="condiciones" styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Descripción</th>
+        <th
+          class="fw-semibold text-center"
+          style="width: 60px !important"
+        >
+          No / Sí
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-condicion>
+      <tr>
+        <td>
+          {{ condicion.Orden }}.- {{ condicion.Nombre }}
+          <span
+            *ngIf="condicion.Comentario"
+            (click)="op.toggle($event)"
+          >
+            <i
+              class="fa-solid fa-circle-question fa-xl pointer"
+            ></i>
+          </span>
+
+          <p-overlayPanel #op>
+            <ng-template pTemplate>
+              <div style="max-width: 250px" class="text-justify">
+                <i>{{ condicion.Comentario }}</i>
+              </div>
+            </ng-template>
+          </p-overlayPanel>
+        </td>
+        <td class="text-center" style="width: 80px">
+          <p-inputSwitch
+            [(ngModel)]="condicion.Valor"
+            [disabled]="!esEditable"
+          ></p-inputSwitch>
+        </td>
+        <td>
+            <textarea
+            pInputTextarea
+            [(ngModel)]="condicion.Observacion"
+            [disabled]="!esEditable"
+            [rows]="1"
+          ></textarea>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>

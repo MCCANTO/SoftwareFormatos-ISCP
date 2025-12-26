@@ -1,0 +1,88 @@
+<div class="mb-4">
+  <p-tabView>
+    <p-tabPanel
+      *ngFor="let item of verificaciones"
+      [header]="item.padre"
+      headerStyleClass="tab-title"
+    >
+      <p-table
+        [value]="item.detalle"
+        rowGroupMode="rowspan"
+        groupRowsBy="nombre"
+        sortField="orden"
+        sortMode="single"
+        styleClass="p-datatable-sm"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th></th>
+            <th class="text-center">Operativo</th>
+            <th class="text-center">Limpio</th>
+            <th class="text-center">Observación</th>
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-verif
+          let-rowIndex="rowIndex"
+          let-rowgroup="rowgroup"
+          let-rowspan="rowspan"
+        >
+          <tr>
+            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
+              {{ verif.nombre }}
+            </td>
+            <td>
+              {{ verif.detalle.trim() === ".-" ? "" : verif.detalle }}
+            </td>
+            <td class="text-center" style="width: 15%">
+              <p-selectButton
+                [options]="valores"
+                optionLabel="texto"
+                optionValue="id"
+                [(ngModel)]="verif.operativo"
+                [disabled]="verif.cerrado || !editable"
+              ></p-selectButton>
+            </td>
+            <td class="text-center" style="width: 15%">
+              <p-selectButton
+                [options]="valores"
+                optionLabel="texto"
+                optionValue="id"
+                [(ngModel)]="verif.limpio"
+                [disabled]="verif.cerrado || !editable"
+              ></p-selectButton>
+            </td>
+            <td class="p-fluid" style="width: 200px">
+              <textarea
+                pInputTextarea
+                [(ngModel)]="verif.observacion"
+                [rows]="1"
+                [disabled]="verif.cerrado || !editable"
+              ></textarea>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+  <button
+    pButton
+    label="Cerrar"
+    icon="fa-solid fa-xmark"
+    class="p-button-rounded p-button-danger me-3 px-5"
+    (click)="cerrar()"
+  ></button>
+  <button
+    pButton
+    label="Agregar"
+    icon="fa-solid fa-plus"
+    class="p-button-rounded p-button-primary px-5"
+    *ngIf="!cerrado"
+    (click)="guardar()"
+  ></button>
+</div>

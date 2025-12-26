@@ -1,0 +1,60 @@
+
+<div class="table-responsive">
+  <table class="table">
+    <!-- <thead>
+      <tr>
+        <th>Parámetro</th>
+        <th class="text-center"></th>
+      </tr>
+    </thead> -->
+    <tbody>
+    <h1>Que?</h1>
+      <tr *ngFor="let parametro of parametros">
+        <td>{{ parametro.Nombre }}</td>
+        <td class="text-center">
+          <b>H11111</b>
+          <p-selectButton [options]="valores" optionLabel="texto" optionValue="id"
+            [(ngModel)]="parametro.Valor"
+          ></p-selectButton>
+        </td>
+      </tr>
+      <!-- <tr>
+        <td>Peso Promedio Producto (Kg)</td>
+        <td class="text-center">
+          <p-selectButton [options]="valores" optionLabel="texto" optionValue="id"
+          ></p-selectButton>
+        </td>
+      </tr>
+      <tr>
+        <td>Genera vacio e inyecta nitrógeno</td>
+        <td class="text-center">
+          <p-selectButton [options]="valores" optionLabel="texto" optionValue="id"
+          ></p-selectButton>
+        </td>
+      </tr>
+      <tr>
+        <td>Sello horizontal hermético de bolsa</td>
+        <td class="text-center">
+          <p-selectButton [options]="valores" optionLabel="texto" optionValue="id"
+          ></p-selectButton>
+        </td>
+      </tr>
+      <tr>
+        <td>Encintado de cajas</td>
+        <td class="text-center">
+          <p-selectButton [options]="valores" optionLabel="texto" optionValue="id"
+          ></p-selectButton>
+        </td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>
+
+<div class="ui-dialog-footer text-center pt-3">
+  <button pButton label="Cerrar" icon="fa-solid fa-xmark" class="p-button-rounded p-button-danger me-3 px-5"
+      (click)="cerrar()"
+  ></button>
+  <button pButton label="Agregar" icon="fa-solid fa-plus" class="p-button-rounded p-button-primary px-5"
+      (click)="guardar()"
+  ></button>
+</div>

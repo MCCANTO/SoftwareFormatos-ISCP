@@ -1,0 +1,33 @@
+<nav
+  class="navbar navbar-expand-md bg-white py-1 px-3 rounded-3 shadow-sm mb-3"
+>
+  <a class="navbar-brand d-flex" href="#">
+    <img src="assets/logo_en.svg" alt="Logo" width="45" class="me-2" />
+    <div
+      class="d-flex flex-column justify-content-center"
+      style="line-height: 1.1"
+    >
+      <span class="title">CONTROL DE PROCESOS</span>
+      <span [class]="'subtitle ' + classSubtitulo" *ngIf="subtitulo">{{
+        subtitulo
+      }}</span>
+    </div>
+  </a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+
+    <span class="navbar-text text-end me-3" *ngIf="userData">
+      <div class="d-flex flex-column">
+        <strong><i class="fa-solid fa-user"></i> {{ userData.Nombre }}</strong>
+        <span class="rol">({{ userData.RolDesc }})</span>
+      </div>
+    </span>
+    <span class="navbar-text">
+      <button type="button" class="btn btn-danger" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+      </button>
+    </span>
+  </div>
+</nav>

@@ -1,0 +1,15 @@
+<div class="container-fluid py-2">
+
+  <app-custom-navbar></app-custom-navbar>
+
+  <div class="py-2">
+    
+    <app-titulo-pagina
+      titulo="Módulos del Sistema"
+      [mostrarBotonRegresarAnt]="false"
+    ></app-titulo-pagina>
+    <div class="px-5">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
