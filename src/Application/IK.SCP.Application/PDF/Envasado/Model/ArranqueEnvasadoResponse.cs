@@ -86,7 +86,7 @@ public class EvaluacionSensorialArranqueComponente
 public class InspeccionEtiquetadoArranqueEnvasado
 {
     public DateTime FechaCreacion { get; set; }
-    public string CantidadCajas { get; set; }
+    public string CantidadCaja { get; set; }
     public string Etiquetador { get; set; }
     public string Posicion { get; set; }
     public string Inspector { get; set; }

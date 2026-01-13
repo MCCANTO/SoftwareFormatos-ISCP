@@ -221,7 +221,7 @@ export class ArranqueComponent implements OnInit {
       const variables = resp.data;
 
       const vb_ref = this.dialogService.open(VariableBasicaComponent, {
-        header: 'Variables Básicas',
+        header: 'Variables Básicas1',
         width: '95%',
         data: {
           mostrarTipo: true,

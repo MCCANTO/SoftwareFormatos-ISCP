@@ -456,8 +456,9 @@ public static class TemplateEnvasado
                 
 
             }
-            
-            tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 12, "VARIABLES BASICAS - ARRANQUE DE ENVASADO"));
+        document.Add(tableDatosPrincipales);
+
+        tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 12, "VARIABLES BASICAS - ARRANQUE DE ENVASADO"));
 
             foreach (var rowIns in variablesBasicas)
             {
@@ -623,7 +624,7 @@ public static class TemplateEnvasado
             // Evaluacion Sensroial
             var tableInspeccionEtiquetado = new Table(UnitValue.CreatePercentArray(7)).UseAllAvailableWidth();
             tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Fecha Registro"));
-            tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Cantidad de cajas"));
+            tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Cantidad de cajas"));  
             tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Persona de etiqueta"));
             tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Posicion de etiqueta"));
             tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Inspector"));
@@ -633,7 +634,7 @@ public static class TemplateEnvasado
             foreach (var rowIns in inspeccionEtiquetado)
             {
                 tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.FechaCreacion.ToString("M/d/yy")));
-                tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.CantidadCajas));
+                tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.CantidadCaja));
                 tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.Etiquetador));
                 tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.Posicion));
                 tableInspeccionEtiquetado.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.Inspector));
@@ -642,6 +643,14 @@ public static class TemplateEnvasado
             }
             
             tableInspeccionEtiquetado.SetMarginBottom(10f);
+                var titulo = new Paragraph("INSPECCIÓN DE ETIQUETADO (cuando aplica)")
+                .SetBold()
+                .SetFontSize(10)                 // ajusta tamaño
+                .SetMarginTop(6f)                // espacio desde la tabla anterior
+                .SetMarginBottom(4f)             // espacio hacia la tabla
+                .SetKeepWithNext(true);          // evita que el título quede solo al final de página
+
+            document.Add(titulo);
             document.Add(tableInspeccionEtiquetado);
 
             var tableCodificacionHead = new Table(UnitValue.CreatePercentArray(1)).UseAllAvailableWidth();

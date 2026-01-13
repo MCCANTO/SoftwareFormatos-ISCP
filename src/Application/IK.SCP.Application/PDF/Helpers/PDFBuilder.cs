@@ -194,25 +194,50 @@ public class PDFBuilder
         table.AddCell(label);
         table.AddCell(value);
     }
-    public static Cell CreateCellFormat(int rowSpan, int colSpan, string text, TextAlignment textAlignment = TextAlignment.LEFT)
+    //public static Cell CreateCellFormat(int rowSpan, int colSpan, string text, TextAlignment textAlignment = TextAlignment.LEFT)
+    //{
+    //    const int DefaultHeight = 10;
+    //    const int DefaultFontSize = 7;
+
+    //    if (string.IsNullOrEmpty(text))
+    //    {
+    //        return new Cell().SetHeight(DefaultHeight)
+    //            .SetFontSize(DefaultFontSize)
+    //            .SetVerticalAlignment(VerticalAlignment.MIDDLE);
+    //    }
+
+    //    return new Cell(rowSpan, colSpan)
+    //        .SetTextAlignment(textAlignment)
+    //        .Add(new Paragraph(text))
+    //        .SetFontSize(DefaultFontSize)
+    //        .SetVerticalAlignment(VerticalAlignment.MIDDLE);
+    //}
+    public static Cell CreateCellFormat(
+    int rowSpan,
+    int colSpan,
+    string text,
+    TextAlignment textAlignment = TextAlignment.LEFT)
     {
-        const int DefaultHeight = 10;
+        const int DefaultHeight = 12;
         const int DefaultFontSize = 7;
 
-        if (string.IsNullOrEmpty(text))
-        {
-            return new Cell().SetHeight(DefaultHeight)
-                .SetFontSize(DefaultFontSize)
-                .SetVerticalAlignment(VerticalAlignment.MIDDLE);
-        }
-    
-        return new Cell(rowSpan, colSpan)
-            .SetTextAlignment(textAlignment)
-            .Add(new Paragraph(text))
+        var cell = new Cell(rowSpan, colSpan)
+            .SetHeight(DefaultHeight)
             .SetFontSize(DefaultFontSize)
-            .SetVerticalAlignment(VerticalAlignment.MIDDLE);
+            .SetTextAlignment(textAlignment)
+            .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+            .SetPadding(3)
+            .SetBorder(new SolidBorder(0.5f)); // ✅ CUADRO VISIBLE
+
+        if (!string.IsNullOrEmpty(text))
+        {
+            cell.Add(new Paragraph(text));
+        }
+
+        return cell;
     }
-    
+
+
     public static Cell CreateCellFormatHead(int rowSpan, int colSpan, string text, TextAlignment textAlignment = TextAlignment.CENTER)
     {
         return new Cell(rowSpan, colSpan)
