@@ -292,6 +292,7 @@ public static class TemplateEnvasado
             //-- Crear una tabla interna para la primera celda
             var columnsTableChild1 = new float[] { 20, 20,20,20,20 };
             var tableChild1 = new Table(UnitValue.CreatePercentArray(columnsTableChild1));
+            bool reempaque = arranquePDF.esReempaque;
             //
             //
             //-- Agregar contenido a la tabla interna de la primera celda
@@ -309,11 +310,11 @@ public static class TemplateEnvasado
             PDFBuilder.RemoveAllBorder(tableChild1);
             tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Reempaque:").SetBorder(Border.NO_BORDER));
             tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Si").SetBorder(Border.NO_BORDER));
-            tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, "X"));
+            tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, reempaque ? "X" : ""));
             tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, "No").SetBorder(Border.NO_BORDER));
-            tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, " "));
-          
-            var celdaChild2 = new Cell(1, 1);
+            tableChild1.AddCell(PDFBuilder.CreateCellFormat(1, 1, !reempaque ? "X" : ""));
+
+        var celdaChild2 = new Cell(1, 1);
             var tableChild2 = new Table(UnitValue.CreatePercentArray(1)).UseAllAvailableWidth();
             //
             var celdaChild21 = new Cell(1, 1);
@@ -418,45 +419,94 @@ public static class TemplateEnvasado
              tableCondicionesPrevias.SetMargins(0, 0, 0, 0);
              PDFBuilder.RemoveAllBorder(tableCondicionesPrevias);
              document.Add(tableCondicionesPrevias);
-            //
-            // //
-            // // LOS CONTROLES BÁSICOS SE APLICARÁN ANTES Y DURANTE LA OPERACIÓN DE LA ENVASADORA EN 3 MOMENTOS DEL TURNO 
-            // //
-            // // ---------------------------------------------------------------------------------------------
-            // //          VARIABLES BÁSICAS PARA ARRANQUE Y OPERACIÓN DE ENVASADORAS
-            // // ---------------------------------------------------------------------------------------------
-            // //               Turno             |   TA   |     TR     |   TC  |_______|                      |                           
-            // //               Hora              |  16:00 |    17:00   | 18:00 |_______|     Observaciones    |                           
-            // //               Maquinista        |        Jose Roberto         |       |                      |                            
-            // // ---------------------------------------------------------------------------------------------
-            // //                           VARIABLES BASICAS - ARRANQUE DE ENVASADO                           |   
-            // // ---------------------------------------------------------------------------------------------
-            // // 
-            // //---------------------------------------------------------------------------------------------
-            //
-            document.Add(new Paragraph("Re-arranque: Se considera despues de una parada de 2 horas").SetFontSize(6));
-            
-            //  Agregar Tabla Variables Basicas
-            var columnsDatosPrincipales = new float[] { 18, 30, 7, 7, 7, 7, 24 };
-            var tableDatosPrincipales = new Table(UnitValue.CreatePercentArray(columnsDatosPrincipales)).UseAllAvailableWidth();
-            
-            
-            foreach (var info in responsablesVB)
-            {
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 2, "Turno"));
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 4, info.Turno + " "));
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(3, 1, "Observaciones"));
-                
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 2, "Hora"));
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 4, info.Fechas));
-                
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 2, "Maquinistas"));
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 4, info.Maquinistas));
-                
-                
+        //
+        // //
+        // // LOS CONTROLES BÁSICOS SE APLICARÁN ANTES Y DURANTE LA OPERACIÓN DE LA ENVASADORA EN 3 MOMENTOS DEL TURNO 
+        // //
+        // // ---------------------------------------------------------------------------------------------
+        // //          VARIABLES BÁSICAS PARA ARRANQUE Y OPERACIÓN DE ENVASADORAS
+        // // ---------------------------------------------------------------------------------------------
+        // //               Turno             |   TA   |     TR     |   TC  |_______|                      |                           
+        // //               Hora              |  16:00 |    17:00   | 18:00 |_______|     Observaciones    |                           
+        // //               Maquinista        |        Jose Roberto         |       |                      |                            
+        // // ---------------------------------------------------------------------------------------------
+        // //                           VARIABLES BASICAS - ARRANQUE DE ENVASADO                           |   
+        // // ---------------------------------------------------------------------------------------------
+        // // 
+        // //---------------------------------------------------------------------------------------------
+        //
 
-            }
-        document.Add(tableDatosPrincipales);
+        //document.Add(new Paragraph("Re-arranque: Se considera despues de una parada de 2 horas").SetFontSize(6));
+
+        ////  Agregar Tabla Variables Basicas
+        var columnsDatosPrincipales = new float[] { 18, 30, 7, 7, 7, 7, 24 };
+        var tableDatosPrincipales = new Table(UnitValue.CreatePercentArray(columnsDatosPrincipales)).UseAllAvailableWidth();
+
+
+        //foreach (var info in responsablesVB) 
+        //{ 
+
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 2, "Turno")); 
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 4, info.Turno + " ")); 
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(3, 1, "Observaciones")); 
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 2, "Hora")); 
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 4, info.Fechas)); 
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 2, "Maquinistas")); 
+        //    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 4, info.Maquinistas)); 
+
+        //}
+
+        document.Add(new Paragraph("Re-arranque: Se considera despues de una parada de 2 horas")
+.SetFontSize(6));
+
+        var info = responsablesVB?.FirstOrDefault();
+        if (info == null) return;
+
+        // Separar por comas
+        var turnos = SplitCsv(info.Turno);
+        var horas = SplitCsv(info.Fechas);
+        var maqs = SplitCsv(info.Maquinistas);
+
+        // Definir cuántas columnas dinámicas se usarán (máximo entre los 3)
+        int n = new[] { turnos.Count, horas.Count, maqs.Count }.Max();
+        if (n == 0) n = 1; // mínimo 1 columna
+
+        // Columnas: etiqueta + N valores + observaciones
+        var widths = new List<float>();
+        widths.Add(18);          // Etiquetas
+        for (int i = 0; i < n; i++) widths.Add(10);  // Valores (ajusta ancho si quieres)
+        widths.Add(24);          // Observaciones
+
+        var table = new Table(UnitValue.CreatePercentArray(widths.ToArray()))
+            .UseAllAvailableWidth();
+
+        // -------- FILA 1: TURNO --------
+        table.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Turno"));
+        for (int i = 0; i < n; i++)
+        {
+            var val = i < turnos.Count ? turnos[i] : "";
+            table.AddCell(PDFBuilder.CreateCellFormat(1, 1, val));
+        }
+        table.AddCell(PDFBuilder.CreateCellFormat(3, 1, "Observaciones"));
+
+        // -------- FILA 2: HORA --------
+        table.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Hora"));
+        for (int i = 0; i < n; i++)
+        {
+            var val = i < horas.Count ? horas[i] : "";
+            table.AddCell(PDFBuilder.CreateCellFormat(1, 1, val));
+        }
+
+        // -------- FILA 3: MAQUINISTAS --------
+        table.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Maquinistas"));
+        for (int i = 0; i < n; i++)
+        {
+            var val = i < maqs.Count ? maqs[i] : "";
+            table.AddCell(PDFBuilder.CreateCellFormat(1, 1, val));
+        }
+
+        document.Add(table);
+
 
         tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 12, "VARIABLES BASICAS - ARRANQUE DE ENVASADO"));
 
@@ -676,6 +726,16 @@ public static class TemplateEnvasado
             // Cerrar el objeto Document
             document.Close();
         }
+
+    private static List<string> SplitCsv(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return new List<string>();
+        return value
+            .Split(',')
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .ToList();
+    }
     public static void printDocumentArranqueBlending(Document document, ArranqueBlendingResponse arranqueBlending)
     {
         

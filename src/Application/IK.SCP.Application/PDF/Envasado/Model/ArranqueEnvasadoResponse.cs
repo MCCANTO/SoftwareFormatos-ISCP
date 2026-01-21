@@ -7,7 +7,7 @@ public class ArranqueEnvasadoResponse
     public string Fecha { get; set; }
     public string Linea { get; set; }
     public string NameEnvasadora { get; set; }
-    public string Reempaque { get; set; }
+    public bool esReempaque { get; set; }
 
     public List<CondicionesPreviasArranqueEnvasado> condicionPrevia { get; set; }
     public List<VariablesBasicasArranqueEnvasado> VariablesBasicas { get; set; }
