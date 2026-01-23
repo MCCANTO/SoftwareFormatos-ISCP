@@ -518,4 +518,22 @@ export class ArranqueComponent implements OnInit {
       },
     });
   }
+
+
+testPermisos() {
+  // Datos de prueba directos del JSON que me pasaste
+  const testData = {
+    Acciones: [
+      { OpcionId: 1202, AccionId: "ENV01ES", Nombre: "ESCRITURA" },
+      { OpcionId: 1202, AccionId: "ENV01LE", Nombre: "LECTURA" },
+      { OpcionId: 1203, AccionId: "ENV02LE", Nombre: "LECTURA" },
+      { OpcionId: 1203, AccionId: "ENV02RE", Nombre: "REVISIÓN" }
+    ]
+  };
+  
+  const tiene = testData.Acciones.some(a => a.Nombre === "REVISIÓN");
+  console.log('TEST: Con datos del JSON, tiene REVISIÓN?', tiene);
+  
+}
+  
 }

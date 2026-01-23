@@ -381,7 +381,7 @@
         </div>
       </div>
     </p-tabPanel>
-    <p-tabPanel header="INSPECCIÓN Y REVISIÓN">
+    <p-tabPanel header="INSPECCIÓN Y REVISIÓN1">
       <div class="px-4">
         <div class="row">
           <div class="col">
@@ -443,8 +443,20 @@
             <app-tarjeta-seccion
               icono="fa fa-caret-right"
               titulo="Revisión"
+              [headerTemplate]="headerTemplate_10"
               [contentTemplate]="contentTemplate_10"
             >
+            <ng-template #headerTemplate_10>
+                <button
+                  pButton
+                  label="Revisar"
+                  icon="fa fa-plus"
+                  class="p-button-rounded p-button-primary px-4"
+                  *ngIf="PERMISOS.REVISION"
+                  (click)="openModalRevision()"
+                ></button>
+              </ng-template>
+
               <ng-template #contentTemplate_10>
                 <div class="row">
                   <div class="col-md-4" *ngFor="let revision of revisiones">
@@ -464,7 +476,11 @@
             </app-tarjeta-seccion>
           </div>
         </div>
+
+        
       </div>
     </p-tabPanel>
   </p-tabView>
 </div>
+
+

@@ -462,50 +462,59 @@ public static class TemplateEnvasado
         var info = responsablesVB?.FirstOrDefault();
         if (info == null) return;
 
-        // Separar por comas
         var turnos = SplitCsv(info.Turno);
         var horas = SplitCsv(info.Fechas);
         var maqs = SplitCsv(info.Maquinistas);
 
-        // Definir cuántas columnas dinámicas se usarán (máximo entre los 3)
-        int n = new[] { turnos.Count, horas.Count, maqs.Count }.Max();
-        if (n == 0) n = 1; // mínimo 1 columna
+        // siempre 4 columnas de valores
+        int n = Math.Max(4, new[] { turnos.Count, horas.Count, maqs.Count }.Max());
 
-        // Columnas: etiqueta + N valores + observaciones
-        var widths = new List<float>();
-        widths.Add(18);          // Etiquetas
-        for (int i = 0; i < n; i++) widths.Add(10);  // Valores (ajusta ancho si quieres)
-        widths.Add(24);          // Observaciones
+        // ✅ MISMAS columnas que tableDatosPrincipales: 18,30,7,7,7,7,24
+        var widths = new float[] { 18f, 30f, 7f, 7f, 7f, 7f, 24f };
 
-        var table = new Table(UnitValue.CreatePercentArray(widths.ToArray()))
+        var table = new Table(UnitValue.CreatePercentArray(widths))
             .UseAllAvailableWidth();
 
-        // -------- FILA 1: TURNO --------
-        table.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Turno"));
-        for (int i = 0; i < n; i++)
+        // helper para celdas “valor”
+        Cell Val(string txt) => PDFBuilder.CreateCellFormat(1, 1, txt ?? "", TextAlignment.CENTER)
+            .SetPadding(0);
+
+        // helper para etiqueta que ocupa 18+30
+        Cell Label2(string txt) => PDFBuilder.CreateCellFormat(1, 2, txt, TextAlignment.LEFT)
+            .SetPadding(0);
+
+        // ---------------- FILA 1: TURNO ----------------
+        table.AddCell(Label2("Turno"));
+        for (int i = 0; i < 4; i++)
         {
             var val = i < turnos.Count ? turnos[i] : "";
-            table.AddCell(PDFBuilder.CreateCellFormat(1, 1, val));
+            table.AddCell(Val(val));
         }
-        table.AddCell(PDFBuilder.CreateCellFormat(3, 1, "Observaciones"));
+        table.AddCell(
+            PDFBuilder.CreateCellFormat(3, 1, "Observaciones", TextAlignment.LEFT)
+                .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                .SetPadding(0)
+        );
 
-        // -------- FILA 2: HORA --------
-        table.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Hora"));
-        for (int i = 0; i < n; i++)
+        // ---------------- FILA 2: HORA ----------------
+        table.AddCell(Label2("Hora"));
+        for (int i = 0; i < 4; i++)
         {
             var val = i < horas.Count ? horas[i] : "";
-            table.AddCell(PDFBuilder.CreateCellFormat(1, 1, val));
+            table.AddCell(Val(val));
         }
 
-        // -------- FILA 3: MAQUINISTAS --------
-        table.AddCell(PDFBuilder.CreateCellFormat(1, 1, "Maquinistas"));
-        for (int i = 0; i < n; i++)
+        // ---------------- FILA 3: MAQUINISTAS ----------------
+        table.AddCell(Label2("Maquinistas"));
+        for (int i = 0; i < 4; i++)
         {
             var val = i < maqs.Count ? maqs[i] : "";
-            table.AddCell(PDFBuilder.CreateCellFormat(1, 1, val));
+            table.AddCell(Val(val));
         }
 
         document.Add(table);
+
+
 
 
         tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 12, "VARIABLES BASICAS - ARRANQUE DE ENVASADO"));

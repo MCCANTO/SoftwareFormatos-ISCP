@@ -24,6 +24,11 @@ import { saveAs } from 'file-saver';
 import {NgxSpinnerService} from "ngx-spinner";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {JwtTokenService} from "../../../services/jwt-token.service";
+import {
+  ACCION_ENV_BLENDING_CHECKLIST,
+  ACCION_ENV_CHECKLIST_ARRANQUE_MAQUINA,
+  ACCION_ENV_REGISTRO_PEDACERIA,
+} from 'src/app/core/constants/accion.constant';
 
 @Component({
   selector: 'app-detalle-arranque',
@@ -34,6 +39,30 @@ import {JwtTokenService} from "../../../services/jwt-token.service";
 export class DetalleArranqueComponent implements OnInit {
 
   PERMISOS: PermisoAccion = {
+    LECTURA: false,
+    ESCRITURA: false,
+    REVISION: false,
+  };
+
+    PERMISOS_CHL_MAQ: PermisoAccion = {
+    LECTURA: false,
+    ESCRITURA: false,
+    REVISION: false,
+  };
+
+  PERMISOS_BLEND_CHL_MAQ: PermisoAccion = {
+    LECTURA: false,
+    ESCRITURA: false,
+    REVISION: false,
+  };
+
+  PERMISOS_CHL_ENV: PermisoAccion = {
+    LECTURA: false,
+    ESCRITURA: false,
+    REVISION: false,
+  };
+
+  PERMISOS_REG_PED: PermisoAccion = {
     LECTURA: false,
     ESCRITURA: false,
     REVISION: false,
@@ -81,6 +110,19 @@ export class DetalleArranqueComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.id = this.activatedRoute.snapshot.params['id'];
+    this.securityService
+          .validarAcciones([
+            ACCION_ENV_CHECKLIST_ARRANQUE_MAQUINA,
+            ACCION_ENV_CHECKLIST_ARRANQUE_ENVASADO,
+            ACCION_ENV_BLENDING_CHECKLIST,
+            ACCION_ENV_REGISTRO_PEDACERIA,
+          ])
+          .then((resp) => {
+            this.PERMISOS_CHL_MAQ = resp[0];
+            this.PERMISOS_CHL_ENV = resp[1];
+            this.PERMISOS_BLEND_CHL_MAQ = resp[2];
+            this.PERMISOS_REG_PED = resp[3];
+          });
   }
 
   ngOnInit(): void {
@@ -96,6 +138,8 @@ export class DetalleArranqueComponent implements OnInit {
     this.cargarObservaciones();
     this.cargarInspecciones();
     this.cargarRevisiones();
+
+    this.cargarArranqueEnvasado();
   }
 
   cargarDataEnvasado() {
@@ -479,5 +523,57 @@ export class DetalleArranqueComponent implements OnInit {
         });
       },
     });
+  }
+
+  cargarArranqueEnvasado() {
+    this.arranqueService
+      .getArranque(this.dataEnvasadora.Id, this.dataOrden.Orden)
+      .subscribe((resp) => {
+        if (resp.ok) {
+          if (resp.data) {
+            this.router.navigate(['/envasado/arranque']);
+          } else {
+            if (!this.PERMISOS_CHL_ENV.ESCRITURA) {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Advertencia',
+                detail: 'No tiene permiso para realizar esta acción.',
+              });
+              return;
+            }
+
+            this.confirmationService.confirm({
+              message:
+                'Se generará un nuevo <b>Checklist de Arranque de Envasado</b>. ¿Desea continuar con la generación?',
+              accept: () => {
+                const data = {
+                  envasadoraId: this.dataEnvasadora.Id,
+                  ordenId: this.dataOrden.Orden,
+                };
+
+                this.arranqueService
+                  .postArranqueActivo(data)
+                  .subscribe((resp) => {
+                    if (resp.ok) {
+                      this.router.navigate(['/envasado/arranque']);
+                    } else {
+                      this.messageService.add({
+                        severity: 'error',
+                        summary: 'Mensaje de Error',
+                        detail: 'No se pudo generar nuevo Arranque.',
+                      });
+                    }
+                  });
+              },
+            });
+          }
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Mensaje de Error',
+            detail: 'No se pudieron obtener datos de Arranque.',
+          });
+        }
+      });
   }
 }

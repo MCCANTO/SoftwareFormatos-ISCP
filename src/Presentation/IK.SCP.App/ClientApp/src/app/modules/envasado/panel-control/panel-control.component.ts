@@ -187,6 +187,7 @@ export class PanelControlComponent implements OnInit {
   }
 
   goTo(idAplicacion: number) {
+      console.log('CLICK NodoId:', idAplicacion);
     if (idAplicacion === 0) {
       window.location.href = environment.UrlBandejaEnvasado;
     }
