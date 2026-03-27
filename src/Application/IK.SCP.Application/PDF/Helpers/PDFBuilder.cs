@@ -229,38 +229,63 @@ public class PDFBuilder
     {
         var columnsSignature = new float[] { 35, 15, 15, 35 };
         var tableSignature = new Table(UnitValue.CreatePercentArray(columnsSignature)).UseAllAvailableWidth();
-    
-        AddSignatureRow(tableSignature, false, namePerson1.Equals("") ? "" : valorPerson1, "");
-        AddSignatureRow(tableSignature, false,"", namePerson2.Equals("") ? "" : valorPerson2);
-        
-        AddSignatureRow(tableSignature, true,namePerson1, "");
-        AddSignatureRow(tableSignature, true,"", namePerson2);
-    
-        tableSignature.SetMarginTop(40f);
+
+        tableSignature.SetMarginTop(30f);
+
+        // 1) Usuario arriba
+        AddSignatureRow(tableSignature, false, valorPerson1, "");
+        AddSignatureRow(tableSignature, false, "", valorPerson2);
+
+        // 2) Raya al medio
+        AddSignatureLineRow(tableSignature, !string.IsNullOrWhiteSpace(namePerson1), false);
+        AddSignatureLineRow(tableSignature, false, !string.IsNullOrWhiteSpace(namePerson2));
+
+        // 3) Cargo abajo
+        AddSignatureRow(tableSignature, false, namePerson1, "");
+        AddSignatureRow(tableSignature, false, "", namePerson2);
+
         document.Add(tableSignature);
+    }
+    public static void AddSignatureLineRow(Table table, bool lineCell1, bool lineCell2)
+    {
+        Border topBorder = new SolidBorder(1);
+
+        Cell cell1 = CreateCellFormat(1, 1, "", TextAlignment.CENTER)
+            .SetBorder(Border.NO_BORDER)
+            .SetPaddingTop(0)
+            .SetPaddingBottom(0)
+            .SetHeight(8);
+
+        Cell cell2 = CreateCellFormat(1, 1, "", TextAlignment.CENTER)
+            .SetBorder(Border.NO_BORDER)
+            .SetPaddingTop(0)
+            .SetPaddingBottom(0)
+            .SetHeight(8);
+
+        if (lineCell1)
+            cell1.SetBorderTop(topBorder);
+
+        if (lineCell2)
+            cell2.SetBorderTop(topBorder);
+
+        SetLabelValue(table, cell1, cell2);
     }
 
     public static void AddSignatureRow(Table table, bool border, string cell1Text, string cell2Text)
     {
-        Border topBorder = new SolidBorder(1);
-        Cell cell1 = CreateCellFormat(1, 1, cell1Text, TextAlignment.CENTER).SetBorder(Border.NO_BORDER);
-        Cell cell2 = CreateCellFormat(1, 1, cell2Text, TextAlignment.CENTER).SetBorder(Border.NO_BORDER);
-    
-        if (border)
-        {
-            if (!string.IsNullOrEmpty(cell1Text))
-            {
-                cell1.SetBorderTop(topBorder);
-            }
-            else if (!string.IsNullOrEmpty(cell2Text))
-            {
-                cell2.SetBorderTop(topBorder);
-            }
-        }
+        Cell cell1 = CreateCellFormat(1, 1, cell1Text, TextAlignment.CENTER)
+            .SetBorder(Border.NO_BORDER)
+            .SetPaddingTop(0)
+            .SetPaddingBottom(1);
+
+        Cell cell2 = CreateCellFormat(1, 1, cell2Text, TextAlignment.CENTER)
+            .SetBorder(Border.NO_BORDER)
+            .SetPaddingTop(0)
+            .SetPaddingBottom(1);
 
         SetLabelValue(table, cell1, cell2);
     }
-    
+
 
     // public static setSpaceIntoTable(Document document)
     // {

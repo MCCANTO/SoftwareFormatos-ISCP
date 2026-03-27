@@ -76,10 +76,10 @@ public class ArranqueEnvasadoHandler : IRequestHandler<ArranqueEnvasado, StatusR
                         using (var document = new Document(pdfDocument))
                         {
                             InformacionHeadDocument objHead = new InformacionHeadDocument(
-                                "IKC.PRO.F.15",
+                                "IKC.PRO.F.16",
                                 "CHECK LIST DE ARRANQUE DE ENVASADO",
                                 "15",
-                                "05/05/2021"
+                                "12/04/2024"
                             );
                             
                             pdfDocument.AddEventHandler(PdfDocumentEvent.START_PAGE, new HeaderDocument(document, objHead));

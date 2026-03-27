@@ -517,33 +517,53 @@ public static class TemplateEnvasado
 
 
 
-        tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 12, "VARIABLES BASICAS - ARRANQUE DE ENVASADO"));
+        tableDatosPrincipales.AddCell(
+    PDFBuilder.CreateCellFormat(1, 12, "VARIABLES BASICAS - ARRANQUE DE ENVASADO")
+);
 
-            foreach (var rowIns in variablesBasicas)
+        // Agrupa por "Padre" manteniendo el orden original
+        var grupos = variablesBasicas
+            .GroupBy(v => v.Padre)
+            .ToList();
+
+        foreach (var g in grupos)
+        {
+            var items = g.ToList();
+            int rows = items.Count;
+
+            // ✅ Celda "Padre" SOLO UNA VEZ con rowSpan = cantidad de items del grupo
+            tableDatosPrincipales.AddCell(
+                PDFBuilder.CreateCellFormat(rows, 1, g.Key) // rowSpan = rows
+                    .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+            );
+
+            // Ahora agregas las filas del grupo, pero SIN repetir "Padre"
+            foreach (var rowIns in items)
             {
-                
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.Padre));
-                
                 tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 1, rowIns.Nombre));
-                var valoresFaltantes = 4 -rowIns.Valor.Split(',').Length;
-                foreach (string valor in rowIns.Valor.Split(',')) {
-                    tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 1, PDFBuilder.IsNullString(valor)));
-                }
 
-                if (valoresFaltantes > 0)
-                {
-                    for (var i = 0; i<valoresFaltantes; i++)
-                    {
-                        tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 1, PDFBuilder.IsNullString("")));
-                    }
-                }
-                
-                tableDatosPrincipales.AddCell(PDFBuilder.CreateCellFormat(1, 1, PDFBuilder.IsNullString(rowIns.Observacion)));
-                
+                var parts = (rowIns.Valor ?? "").Split(',');
+                int valoresFaltantes = 4 - parts.Length;
+
+                foreach (var valor in parts)
+                    tableDatosPrincipales.AddCell(
+                        PDFBuilder.CreateCellFormat(1, 1, PDFBuilder.IsNullString(valor))
+                    );
+
+                for (int i = 0; i < valoresFaltantes; i++)
+                    tableDatosPrincipales.AddCell(
+                        PDFBuilder.CreateCellFormat(1, 1, "")
+                    );
+
+                tableDatosPrincipales.AddCell(
+                    PDFBuilder.CreateCellFormat(1, 1, PDFBuilder.IsNullString(rowIns.Observacion))
+                );
             }
-            
-            
-            tableDatosPrincipales.SetMarginBottom(10f); // Agregar un margen Bottom a la tabla
+        }
+
+
+
+        tableDatosPrincipales.SetMarginBottom(10f); // Agregar un margen Bottom a la tabla
             document.Add(tableDatosPrincipales);
             document.Add(new Paragraph("Leyenda:   C:Conforme  NC: No Conforme  NA: No Aplica  P:Pendiente       (*) Solo se imprimela codificacion  \n ").SetFontSize(6).SetBold());
            
@@ -726,14 +746,24 @@ public static class TemplateEnvasado
             tableCodificacionHead.SetHeight(320f);
             
             document.Add(tableCodificacionHead);
-            
-            /************************************************************************************************************
-             *  SIGNATURE
-             ************************************************************************************************************/
-            PDFBuilder.SetSignature(document, "Punta Estrella (Nombre y Firma)", "Facilitador y/o Inspector de Calidad (Nombre y Firma)", "");
-            
-            // Cerrar el objeto Document
-            document.Close();
+
+        /************************************************************************************************************
+         *  SIGNATURE
+         ************************************************************************************************************/
+        //PDFBuilder.SetSignature(document, "Punta Estrella (Nombre y Firma)", "Facilitador y/o Inspector de Calidad (Nombre y Firma)", "");
+        var usuarioFirma = revisores?.LastOrDefault()?.UsuarioCreacion?.ToString() ?? "";
+
+        PDFBuilder.SetSignature(
+            document,
+            "Punta Estrella (Nombre y Firma)",
+            "Facilitador y/o Inspector de Calidad (Nombre y Firma)",
+            usuarioFirma,
+            usuarioFirma
+        );
+
+
+        // Cerrar el objeto Document
+        document.Close();
         }
 
     private static List<string> SplitCsv(string value)
